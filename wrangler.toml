@@ -1,0 +1,12 @@
+name = "inijmegen"
+compatibility_date = "2026-06-17"
+workers_dev = false
+
+# Static-only Worker. Geen code-handler — alleen de bestanden uit de
+# repo-root worden geserveerd.
+[assets]
+directory = "."
+# Clean URLs: /stichting → serveert stichting.html zonder redirect;
+# /stichting.html → 308 naar /stichting.
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"

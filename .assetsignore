@@ -1,0 +1,10 @@
+# Niet als asset naar Cloudflare uploaden:
+node_modules
+.git
+.github
+.gitignore
+.assetsignore
+wrangler.toml
+README.md
+CLAUDE.md
+build.py

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bestuur &middot; Gemeenschapsservice Nijmegen Stad en Land</title>
+<meta name="description" content="Samenstelling van het bestuur en beloningsbeleid.">
+<meta property="og:title" content="Bestuur &middot; Gemeenschapsservice Nijmegen Stad en Land">
+<meta property="og:description" content="Samenstelling van het bestuur en beloningsbeleid.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="nl_NL">
+<meta name="theme-color" content="#17458f">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav" aria-label="Hoofdmenu">
+    <a class="nav__logo" href="/" aria-label="Home">
+      <span>Stichting Gemeenschapsservice</span>
+      <small>Nijmegen Stad en Land</small>
+    </a>
+    <button class="nav__toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav__links" id="navLinks">
+      <li><a class="" href="/">Home</a></li>
+      <li><a class="" href="/stichting">De stichting</a></li>
+      <li><a class="active" href="/bestuur">Bestuur</a></li>
+      <li><a class="" href="/beleidsplan">Beleidsplan</a></li>
+      <li><a class="" href="/voorwaarden">Voorwaarden</a></li>
+      <li><a class="" href="/jaarstukken">Jaarstukken</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero hero--compact">
+  <div class="hero__bg" style="background-image:url('/assets/img/hero-bestuur.jpeg')"></div>
+  <div class="wrap hero__inner">
+    <span class="hero__eyebrow">Bestuur</span>
+    <h1>De mensen die de koers zetten</h1>
+    <p class="lede">Voorzitter, penningmeester en secretaris &mdash; allen onbezoldigd.</p>
+  </div>
+</section>
+
+<main class="section">
+  <div class="wrap">
+
+    <div class="card">
+      <h2>Samenstelling</h2>
+      <dl class="dl-table">
+        <dt>Voorzitter</dt>
+        <dd>Ren&eacute; Wilderom</dd>
+        <dt>Penningmeester</dt>
+        <dd>Hans Hendriks</dd>
+        <dt>Secretaris</dt>
+        <dd>Marijke van Veen</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <h3>Beloningsbeleid</h3>
+      <p>Het bestuur ontvangt voor haar werkzaamheden geen beloning. De organisatiekosten worden bewust zo laag mogelijk gehouden, zodat de fondsen zoveel mogelijk ten goede komen aan de gesteunde doelen.</p>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h4>Contact</h4>
+        <p>Stichting Gemeenschapsservice<br>Nijmegen Stad en Land</p>
+        <p class="muted">Aanvragen via de <a href="/voorwaarden">voorwaarden-pagina</a>.</p>
+      </div>
+      <div>
+        <h4>Bestuur</h4>
+        <p>Secretaris<br>Lodewijkstraat 8<br>6585 KM Mook</p>
+        <p>Penningmeester<br>Herckenrathweg 6<br>6681 DD Bemmel</p>
+      </div>
+      <div>
+        <h4>Gegevens</h4>
+        <p>KvK 41056683<br>RSIN 806308527<br>IBAN NL73 ABNA 0498 5374 39</p>
+      </div>
+      <div>
+        <h4>Documenten</h4>
+        <p><a href="/jaarstukken">Jaarstukken</a><br>
+        <a href="/beleidsplan">Beleidsplan</a><br>
+        <a href="/voorwaarden">Voorwaarden geldelijke bijdrage</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year">2026</span> Stichting Gemeenschapsservice Nijmegen Stad en Land</span>
+      <span>Opgericht 23 mei 1984 &middot; ANBI</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const t = document.getElementById('navToggle');
+  const l = document.getElementById('navLinks');
+  if (t && l) t.addEventListener('click', () => {
+    const open = l.classList.toggle('open');
+    t.setAttribute('aria-expanded', String(open));
+  });
+</script>
+</body>
+</html>
