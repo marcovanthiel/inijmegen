@@ -264,14 +264,29 @@ legend { padding: 0 8px; font-weight: 600; color: var(--blue); font-size: 14px; 
 }
 .back { font-size: 13px; text-decoration: none; }
 
-.preview-box { margin-top: 8px; }
-.preview {
-  margin-top: 12px;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: #fafbfc;
+/* Quill WYSIWYG */
+#quill-editor {
+  background: white;
+  min-height: 360px;
+  border-radius: 0 0 6px 6px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 15px;
 }
+.ql-toolbar.ql-snow {
+  border-radius: 6px 6px 0 0;
+  border-color: var(--border);
+}
+.ql-container.ql-snow {
+  border-color: var(--border);
+}
+.ql-editor {
+  min-height: 360px;
+  padding: 16px 20px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.ql-editor h2 { font-family: 'Playfair Display', Georgia, serif; }
+.ql-editor h3 { font-family: 'Playfair Display', Georgia, serif; }
 
 /* ── Tables ────────────────────────────────────────────────────── */
 

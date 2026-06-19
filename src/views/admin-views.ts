@@ -205,12 +205,9 @@ export function renderPageEdit(opts: {
 
     <fieldset>
       <legend>Hoofdtekst</legend>
-      <p class="muted small">Schrijf in <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank" rel="noopener">Markdown</a>. Gebruik <code>{{kvk}}</code>, <code>{{iban}}</code> etc. om gegevens uit "Stichtingsgegevens" automatisch in te voegen.</p>
-      <textarea id="f_body_md" name="body_md" rows="20" class="md-editor">${page.body_md}</textarea>
-      <div class="preview-box">
-        <button type="button" class="btn btn--ghost" id="previewBtn">Voorbeeld tonen</button>
-        <div id="previewArea" class="preview hidden"></div>
-      </div>
+      <p class="muted small">Tip: gebruik <code>{{kvk}}</code>, <code>{{iban}}</code>, <code>{{voorzitter}}</code> etc. om gegevens uit <a href="/admin/settings">Stichtingsgegevens</a> automatisch in te voegen — die wijzig je dan maar op één plek.</p>
+      <div id="quill-editor"></div>
+      <textarea id="f_body_md" name="body_md" hidden>${page.body_md}</textarea>
     </fieldset>
 
     <div class="form-actions">
@@ -219,6 +216,9 @@ export function renderPageEdit(opts: {
     </div>
   </form>
 </div>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@14.1.3/marked.min.js"></script>
 <script src="/assets/js/admin.js"></script>`;
   return renderAdminLayout({
     title: page.nav_label,

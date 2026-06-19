@@ -282,16 +282,6 @@ adminApp.post('/users/:id/delete', async (c) => {
   return c.redirect('/admin/users?flash=ok:Gebruiker verwijderd.');
 });
 
-// ── Preview (markdown → html voor live preview) ──────────────────────
-
-adminApp.post('/api/preview', async (c) => {
-  const { renderMarkdown, interpolate } = await import('../lib/markdown');
-  const { getSettings } = await import('../lib/db');
-  const body = await c.req.json<{ md: string }>();
-  const settings = await getSettings(c.env);
-  return c.json({ html: renderMarkdown(interpolate(body.md, settings)) });
-});
-
 function parseFlash(
   raw: string | undefined,
 ): { type: 'ok' | 'err'; msg: string } | undefined {
