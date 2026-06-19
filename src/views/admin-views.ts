@@ -1,4 +1,4 @@
-import { html, raw, type HtmlString } from '../lib/html';
+import { html, raw } from '../lib/html';
 import type { PageRow, JaarstukRow, UserRow } from '../lib/db';
 import { renderAdminLayout } from './admin-layout';
 import type { SessionUser } from '../env';
@@ -106,8 +106,8 @@ export function renderDashboard(opts: {
   </div>
 
   <div class="dash-tip">
-    <h3>Tip: gebruik de AI-assistent</h3>
-    <p>Bij elk tekstveld vind je een <strong>AI-knop</strong>. Die helpt je de toon consistent te houden, tikfouten te vinden en de tekst beknopt te maken. De suggestie verschijnt naast je tekst — je beslist zelf of je 'm overneemt.</p>
+    <h3>Tip: stichtingsgegevens centraal</h3>
+    <p>KvK, IBAN en adressen wijzig je één keer bij <a href="/admin/settings">Gegevens</a>. Verwijzingen als <code>{{kvk}}</code> of <code>{{iban}}</code> in paginateksten vullen zich automatisch aan — zo blijft alles consistent.</p>
   </div>
 </div>`;
   return renderAdminLayout({ title: 'Overzicht', user, body, active: 'dashboard' });
@@ -170,11 +170,11 @@ export function renderPageEdit(opts: {
       </label>
       <label>
         <span>Titel</span>
-        ${aiField('hero_title', html`<input type="text" id="f_hero_title" name="hero_title" value="${page.hero_title}" required>`)}
+        <input type="text" id="f_hero_title" name="hero_title" value="${page.hero_title}" required>
       </label>
       <label>
         <span>Korte ondertitel</span>
-        ${aiField('hero_lede', html`<input type="text" id="f_hero_lede" name="hero_lede" value="${page.hero_lede}" required>`)}
+        <input type="text" id="f_hero_lede" name="hero_lede" value="${page.hero_lede}" required>
       </label>
       <label>
         <span>Hero-foto</span>
@@ -206,11 +206,7 @@ export function renderPageEdit(opts: {
     <fieldset>
       <legend>Hoofdtekst</legend>
       <p class="muted small">Schrijf in <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank" rel="noopener">Markdown</a>. Gebruik <code>{{kvk}}</code>, <code>{{iban}}</code> etc. om gegevens uit "Stichtingsgegevens" automatisch in te voegen.</p>
-      ${aiField(
-        'body_md',
-        html`<textarea id="f_body_md" name="body_md" rows="20" class="md-editor">${page.body_md}</textarea>`,
-        { multiline: true },
-      )}
+      <textarea id="f_body_md" name="body_md" rows="20" class="md-editor">${page.body_md}</textarea>
       <div class="preview-box">
         <button type="button" class="btn btn--ghost" id="previewBtn">Voorbeeld tonen</button>
         <div id="previewArea" class="preview hidden"></div>
@@ -223,7 +219,6 @@ export function renderPageEdit(opts: {
     </div>
   </form>
 </div>
-${aiPanel()}
 <script src="/assets/js/admin.js"></script>`;
   return renderAdminLayout({
     title: page.nav_label,
@@ -231,43 +226,6 @@ ${aiPanel()}
     body,
     active: 'pages',
   });
-}
-
-function aiField(
-  name: string,
-  field: HtmlString,
-  opts: { multiline?: boolean } = {},
-): HtmlString {
-  return html`<div class="ai-field ${opts.multiline ? 'ai-field--block' : ''}">
-    ${field}
-    <button type="button" class="ai-btn" data-ai-field="${name}" title="AI-hulp">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/></svg>
-      AI
-    </button>
-  </div>`;
-}
-
-function aiPanel(): HtmlString {
-  return html`<div class="ai-panel hidden" id="aiPanel" aria-hidden="true">
-  <div class="ai-panel__head">
-    <strong>AI-assistent</strong>
-    <button type="button" class="link" id="aiClose">Sluiten</button>
-  </div>
-  <div class="ai-panel__body">
-    <div class="ai-actions">
-      <button type="button" class="btn btn--ghost" data-ai-action="improve">Verbeter tekst</button>
-      <button type="button" class="btn btn--ghost" data-ai-action="shorten">Maak korter</button>
-      <button type="button" class="btn btn--ghost" data-ai-action="formal">Formeler maken</button>
-      <button type="button" class="btn btn--ghost" data-ai-action="check">Controleer toon &amp; spelling</button>
-    </div>
-    <label class="ai-instructions">
-      <span>Eigen instructie (optioneel)</span>
-      <textarea id="aiInstruction" rows="2" placeholder="Bv: maak het persoonlijker, of voeg een zin toe over..."></textarea>
-    </label>
-    <button type="button" class="btn btn--primary" id="aiCustomBtn">Eigen instructie uitvoeren</button>
-    <div class="ai-result" id="aiResult"></div>
-  </div>
-</div>`;
 }
 
 // ── Jaarstukken ──────────────────────────────────────────────────────
