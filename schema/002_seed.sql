@@ -29,17 +29,7 @@ VALUES
    'Sociaal-charitatieve doelen, met zorg ondersteund',
    'Sinds 1984 ondersteunt onze stichting projecten van algemeen maatschappelijk belang — in nauwe samenwerking met Rotaryclub Nijmegen Stad en Land.',
    0,
-   'De Stichting Gemeenschapsservice Nijmegen Stad en Land ondersteunt sociaal-charitatieve projecten van algemeen maatschappelijk belang — in Nederland en daarbuiten. Wij werken vanuit een nauwe samenwerking met Rotaryclub Nijmegen Stad en Land.
-
-## Wat u kunt vinden op deze site
-
-<div class="grid">
-<a class="tile" href="/stichting"><h3>De stichting</h3><p>Doelstelling, gegevens en contact.</p></a>
-<a class="tile" href="/bestuur"><h3>Bestuur</h3><p>Voorzitter, penningmeester en secretaris.</p></a>
-<a class="tile" href="/beleidsplan"><h3>Beleidsplan</h3><p>Onze richtlijnen voor fondsenwerving en besteding.</p></a>
-<a class="tile" href="/voorwaarden"><h3>Voorwaarden</h3><p>Hoe een goed doel een aanvraag indient.</p></a>
-<a class="tile" href="/jaarstukken"><h3>Jaarstukken</h3><p>Onze jaarlijkse verantwoording in PDF.</p></a>
-</div>'),
+   '<div class="card"><h2>Onze doelstelling</h2><p>De stichting heeft de volgende statutaire doelstelling:</p><blockquote><p>Haar financiële middelen, zo veel als naar het oordeel van het bestuur mogelijk, te besteden voor doeleinden, die een sociaal&nbsp;–&nbsp;charitatief karakter hebben.</p></blockquote><p>Hoe dan ook dient een zeer overwegend deel van de geldmiddelen van de stichting dienstbaar gemaakt te worden aan de behartiging van doelstellingen die als van algemeen maatschappelijk belang kunnen worden beschouwd.</p><p>Deze doelstellingen mogen liggen <strong>zowel in Nederland als daarbuiten</strong>.</p></div>'),
 
   ('/stichting', 'De stichting', 1, 1,
    'De stichting · Gemeenschapsservice Nijmegen Stad en Land',
