@@ -85,7 +85,7 @@ export function renderDashboard(opts: {
   const lastChanged = [...pages].sort((a, b) => b.updated_at - a.updated_at)[0];
   const body = html`<div class="dash">
   <h1>Welkom, ${user.name.split(' ')[0]}</h1>
-  <p class="muted">Hier beheer je de teksten en jaarstukken van inijmegen.nl. Wijzigingen zijn direct zichtbaar op de website.</p>
+  <p class="muted">Hier beheer je de teksten en jaarstukken van de Stichting Gemeenschapsservice Nijmegen Stad en Land. Wijzigingen zijn direct zichtbaar op de website.</p>
 
   <div class="dash-grid">
     <a class="dash-card" href="/admin/pages">

@@ -255,7 +255,7 @@ adminApp.post('/users', async (c) => {
   const url = `https://${c.env.SITE_HOST}/admin/reset?token=${token}`;
   await sendMail(c.env, {
     to: email,
-    subject: 'Welkom bij het beheer van inijmegen.nl',
+    subject: 'Welkom bij het beheer van de Stichting Gemeenschapsservice Nijmegen Stad en Land',
     text: `Hoi ${name},
 
 Je bent uitgenodigd om mee te werken aan de website van Stichting

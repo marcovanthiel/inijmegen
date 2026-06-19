@@ -84,10 +84,10 @@ authApp.post('/forgot', async (c) => {
     const resetUrl = `https://${c.env.SITE_HOST}/admin/reset?token=${token}`;
     await sendMail(c.env, {
       to: email,
-      subject: 'Wachtwoord resetten — inijmegen.nl',
+      subject: 'Wachtwoord resetten — Stichting Gemeenschapsservice Nijmegen Stad en Land',
       text: `Hoi ${user.name},
 
-Je hebt een wachtwoordreset aangevraagd voor het beheer van inijmegen.nl.
+Je hebt een wachtwoordreset aangevraagd voor het beheer van de website van de Stichting Gemeenschapsservice Nijmegen Stad en Land.
 Klik op onderstaande link om een nieuw wachtwoord in te stellen (geldig 1 uur):
 
 ${resetUrl}

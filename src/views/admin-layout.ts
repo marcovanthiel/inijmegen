@@ -16,7 +16,7 @@ export function renderAdminLayout(opts: AdminLayoutOpts): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${title} · Beheer · inijmegen.nl</title>
+<title>${title} · Beheer · Stichting Gemeenschapsservice Nijmegen Stad en Land</title>
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
@@ -41,8 +41,8 @@ function renderTopbar(user: SessionUser, active?: string): HtmlString {
   return html`<header class="admin-top">
   <div class="admin-top__inner">
     <a class="admin-brand" href="/admin">
-      <strong>inijmegen.nl</strong>
-      <span>Beheer</span>
+      <strong>Stichting Gemeenschapsservice</strong>
+      <span>Nijmegen Stad en Land · Beheer</span>
     </a>
     <nav class="admin-nav">
       ${items.map(
