@@ -21,11 +21,6 @@ ENTRIES=(
   "2023|Rapport inzake jaarstukken 2023|Mei 2024|jaarstukken-2023.pdf"
   "2022|Rapport inzake jaarstukken 2022|Februari 2023|rapport-inzake-jaarstukken-2022.pdf"
   "2021|Rapport inzake jaarstukken 2021|Februari 2022|jaarstukken-2021.pdf"
-  "2020|Rapport inzake jaarstukken 2020|Mei 2021|jaarstukken-2020.pdf"
-  "2018|Rapport inzake jaarstukken 2018|Maart 2019|jaarstukken-2018.pdf"
-  "2017|Rapport inzake jaarstukken 2017|Februari 2018|jaarstukken-2017.pdf"
-  "2016|Rapport inzake jaarstukken 2016|Juni 2017|jaarstukken-2016.pdf"
-  "2015|Rapport inzake jaarstukken 2015|Juni 2016|jaarstukken-2015.pdf"
 )
 
 SQL=""
