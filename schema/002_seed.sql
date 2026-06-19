@@ -29,7 +29,7 @@ VALUES
    'Sociaal-charitatieve doelen, met zorg ondersteund',
    'Sinds 1984 ondersteunt onze stichting projecten van algemeen maatschappelijk belang — in nauwe samenwerking met Rotaryclub Nijmegen Stad en Land.',
    0,
-   '<div class="card"><h2>Onze doelstelling</h2><p>De stichting heeft de volgende statutaire doelstelling:</p><blockquote><p>Haar financiële middelen, zo veel als naar het oordeel van het bestuur mogelijk, te besteden voor doeleinden, die een sociaal&nbsp;–&nbsp;charitatief karakter hebben.</p></blockquote><p>Hoe dan ook dient een zeer overwegend deel van de geldmiddelen van de stichting dienstbaar gemaakt te worden aan de behartiging van doelstellingen die als van algemeen maatschappelijk belang kunnen worden beschouwd.</p><p>Deze doelstellingen mogen liggen <strong>zowel in Nederland als daarbuiten</strong>.</p></div>'),
+   '<div class="card"><h2>Onze doelstelling</h2><p>De stichting heeft de volgende statutaire doelstelling:</p><blockquote><p>Haar financiële middelen, zo veel als naar het oordeel van het bestuur mogelijk, te besteden voor doeleinden, die een sociaal&nbsp;–&nbsp;charitatief karakter hebben.</p></blockquote><p>Hoe dan ook dient een zeer overwegend deel van de geldmiddelen van de stichting dienstbaar gemaakt te worden aan de behartiging van doelstellingen die als van algemeen maatschappelijk belang kunnen worden beschouwd.</p><p>Deze doelstellingen mogen liggen zowel in Nederland als daarbuiten.</p></div>'),
 
   ('/stichting', 'De stichting', 1, 1,
    'De stichting · Gemeenschapsservice Nijmegen Stad en Land',
