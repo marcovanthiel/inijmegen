@@ -1,7 +1,9 @@
-// PBKDF2-SHA256 met 210.000 iteraties — OWASP-aanbeveling 2023 voor
-// SHA-256. Format: "pbkdf2$<iter>$<salt_b64>$<hash_b64>".
+// PBKDF2-SHA256. Cloudflare Workers ondersteunt max 100.000 iteraties via
+// WebCrypto — boven die grens gooit het runtime een NotSupportedError. We
+// gebruiken dat maximum.
+// Format: "pbkdf2$<iter>$<salt_b64>$<hash_b64>".
 
-const ITERATIONS = 210_000;
+const ITERATIONS = 100_000;
 const KEYLEN = 32;
 const SALTLEN = 16;
 
