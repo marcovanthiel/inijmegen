@@ -46,6 +46,9 @@ adminApp.get('/pages', async (c) => {
 });
 
 const HERO_IMAGES = [
+  'hero-home-classic.jpeg',       // Kronenburgertoren met fontein
+  'hero-stichting-classic.jpeg',  // De Oversteek bij nacht
+  'hero-bestuur-classic.jpeg',    // Waalbrug overdag
   'hero-home.jpeg',
   'hero-stichting.jpeg',
   'hero-bestuur.jpeg',
