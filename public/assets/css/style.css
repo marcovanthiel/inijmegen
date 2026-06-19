@@ -27,6 +27,18 @@ body {
   font-size: 17px;
   line-height: 1.62;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+/* Hero-foto subtiel achter de hele pagina, zodat de sfeer doorloopt
+   onder de content. Lichte witte sluier zodat tekst leesbaar blijft. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(rgba(248, 249, 252, 0.88), rgba(248, 249, 252, 0.92)),
+    var(--page-bg, none) center / cover no-repeat fixed;
 }
 h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; line-height: 1.18; }
 h1 { font-size: clamp(2.1rem, 4vw, 3.2rem); margin: 0 0 .4em; letter-spacing: -.012em; }

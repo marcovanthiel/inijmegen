@@ -47,7 +47,7 @@ export function renderLayout(opts: LayoutOpts): string {
 <link rel="stylesheet" href="/assets/css/style.css">
 ${extraHead ?? raw('')}
 </head>
-<body>
+<body style="--page-bg: url('/assets/img/${page.hero_image}');">
 <header class="site-header">
   <nav class="nav" aria-label="Hoofdmenu">
     <a class="nav__logo" href="/" aria-label="Home">
