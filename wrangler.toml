@@ -1,11 +1,14 @@
 name = "inijmegen"
+main = "src/index.ts"
 compatibility_date = "2026-06-17"
 workers_dev = false
 
-# Static-only Worker. Geen code-handler — alleen de bestanden uit de
-# repo-root worden geserveerd.
+# Worker met static assets. De code in src/index.ts voegt
+# security-headers toe, doet www→apex en zet cache-control per
+# pad — voor de rest is het een dunne proxy naar de assets.
 [assets]
 directory = "."
+binding = "ASSETS"
 # Clean URLs: /stichting → serveert stichting.html zonder redirect;
 # /stichting.html → 308 naar /stichting.
 html_handling = "auto-trailing-slash"

@@ -141,6 +141,7 @@ def page(
 # ────────────────────────────────────────────────────────────────────────
 
 PDC = [
+    ("2025", "rapport-inzake-jaarstukken-2025", "jaarstukken-2025.pdf", "Rapport inzake jaarstukken 2025", "Mei 2026"),
     ("2024", "rapport-inzake-jaarstukken-2024", "jaarstukken-2024.pdf", "Rapport inzake jaarstukken 2024", "Januari 2025"),
     ("2023", "rapport-inzake-jaarstukken-2023", "jaarstukken-2023.pdf", "Rapport inzake jaarstukken 2023", "Mei 2024"),
     ("2022", "rapport-inzake-jaarstukken-2022", "rapport-inzake-jaarstukken-2022.pdf", "Rapport inzake jaarstukken 2022", "Februari 2023"),
