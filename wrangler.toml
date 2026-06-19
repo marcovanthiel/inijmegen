@@ -1,19 +1,36 @@
 name = "inijmegen"
 main = "src/index.ts"
 compatibility_date = "2026-06-17"
+compatibility_flags = ["nodejs_compat"]
 workers_dev = false
 
-# Worker met static assets. De code in src/index.ts voegt
-# security-headers toe, doet www→apex en zet cache-control per
-# pad — voor de rest is het een dunne proxy naar de assets.
+# Worker rendert publieke site server-side uit D1 + R2, en host
+# /admin/* voor content-beheer door het bestuur.
+
+# Statische assets (CSS, JS, hero-foto's, favicon). PDFs staan in R2.
 [assets]
-directory = "."
+directory = "./public"
 binding = "ASSETS"
-# Clean URLs: /stichting → serveert stichting.html zonder redirect;
-# /stichting.html → 308 naar /stichting.
-html_handling = "auto-trailing-slash"
-not_found_handling = "404-page"
-# Worker-handler MOET vóór de asset-serving runnen — anders skipt
-# Cloudflare onze code voor elke matching static asset en lopen
-# security-headers + www-redirect mis.
 run_worker_first = true
+
+# D1 voor content + users + sessies. ID invullen na `wrangler d1 create
+# inijmegen-cms`.
+[[d1_databases]]
+binding = "DB"
+database_name = "inijmegen-cms"
+database_id = "PLACEHOLDER_D1_ID"
+
+# R2 voor jaarstukken-PDF's. Bucket aanmaken met
+# `wrangler r2 bucket create inijmegen-pdc`.
+[[r2_buckets]]
+binding = "PDC"
+bucket_name = "inijmegen-pdc"
+
+# Env vars (geen secrets). Secrets gaan via `wrangler secret put`:
+#   - SESSION_SECRET   (32+ random bytes, hex)
+#   - ANTHROPIC_API_KEY
+#   - RESEND_API_KEY   (voor wachtwoord-reset mail)
+[vars]
+SITE_NAME = "Stichting Gemeenschapsservice Nijmegen Stad en Land"
+SITE_HOST = "inijmegen.nl"
+MAIL_FROM = "noreply@inijmegen.nl"

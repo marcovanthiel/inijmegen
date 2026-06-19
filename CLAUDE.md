@@ -5,109 +5,178 @@ Houd dit bestand actueel.
 
 ## Project
 
-Statische website voor de **Stichting Gemeenschapsservice Nijmegen Stad
-en Land** (ANBI, opgericht 1984). Vervangt op termijn de WordPress-site
-op `gemeenschapsservicenijmegensenl.nl`. Op dit moment een **proef­
-migratie** naar `inijmegen.nl`.
+Website voor de **Stichting Gemeenschapsservice Nijmegen Stad en
+Land** (ANBI, opgericht 23 mei 1984). Vervangt de WordPress-site
+op `gemeenschapsservicenijmegensenl.nl`.
+
+Sinds 2026-06-19 is dit géén statische site meer maar een
+Cloudflare Worker met content in D1 + PDFs in R2 — zodat het bestuur
+zelf via een admin-UI teksten en jaarstukken kan beheren.
+
+## Architectuur
+
+```
+                   ┌─────────────────────┐
+   inijmegen.nl ──▶│   Cloudflare Worker │
+                   │  (Hono, src/index)  │
+                   └──────────┬──────────┘
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        ▼                     ▼                     ▼
+   D1 (DB)              R2 (PDC)              ASSETS-binding
+   • users              • PDF-bestanden       • CSS/JS/img
+   • sessions           per jaar              uit ./public/assets
+   • pages              jaarstukken/
+   • settings              <year>/
+   • jaarstukken             <file>.pdf
+   • audit_log
+```
+
+- **Publieke site** wordt server-side gerenderd vanuit `pages` + `settings` +
+  `jaarstukken` in D1, met Cache-Tag-headers en `cache.delete` op slug bij
+  een save.
+- **Admin** onder `/admin/*` met email + wachtwoord (PBKDF2, sessie-cookie
+  HMAC-getekend, sessions in D1 voor revocation).
+- **AI-hulp**: Claude Haiku 4.5 via `/admin/api/ai/transform`. Stijlgids in
+  `src/routes/ai.ts` (formele toon, u-vorm, ANBI-context).
 
 ## Hosting & deploy
 
 - **Repo**: `marcovanthiel/inijmegen` (public)
-- **Live**: `https://inijmegen.nl/` zodra de Cloudflare-zone actief is
-  (status was "pending" bij start). Tot die tijd via de Worker-route.
 - **Cloudflare account-ID**: `04865fcd4034789d3970c1b51950227c`
 - **Zone-ID inijmegen.nl**: `ba3e94308254e738fe3cb55be0db524d`
-- **Worker-service**: `inijmegen` (Workers Static Assets, géén code-
-  handler)
+- **Worker-service**: `inijmegen`
+- **D1 database**: `inijmegen-cms` (binding `DB`)
+- **R2 bucket**: `inijmegen-pdc` (binding `PDC`)
 
 ### Pipeline
 
 ```
 push naar main → .github/workflows/deploy.yml
-              → python3 build.py   (genereert .html-bestanden)
-              → cloudflare/wrangler-action@v3
-              → site live in ~20s
+              → npm ci
+              → cloudflare/wrangler-action@v3 (wrangler deploy)
+              → Worker live in ~15s
 ```
 
-Vereiste GH secrets (zet via `gh secret set`):
+Vereiste GH secrets:
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`
 
-Handmatig opnieuw deployen: **Actions tab → Run workflow**.
+Vereiste Worker-secrets (via `wrangler secret put <NAME>`):
+- `SESSION_SECRET` — 32+ random bytes hex, voor cookie HMAC
+- `ANTHROPIC_API_KEY` — voor AI-hulp in admin
+- `RESEND_API_KEY` — voor wachtwoord-reset + uitnodigings-mail
 
-## Bouwen — `build.py`
+Vars in `wrangler.toml` `[vars]`: `SITE_NAME`, `SITE_HOST`, `MAIL_FROM`.
 
-Eén Python-script genereert alle pagina's vanuit één template (header,
-hero, footer, scripts). Inhoud per pagina staat in `*_body()`-functies
-in dezelfde file. Voordeel: changes aan nav of footer hoeven maar op
-één plek.
+## Lokaal ontwikkelen
 
 ```bash
-python3 build.py   # genereert *.html in repo-root
+npm install
+npm run db:apply:local    # 001_init.sql in lokale D1
+npm run seed:local        # 002_seed.sql (pages + settings)
+
+# .dev.vars aanmaken met SESSION_SECRET en ANTHROPIC_API_KEY
+echo "SESSION_SECRET=$(node -e 'process.stdout.write(require(\"crypto\").randomBytes(32).toString(\"hex\"))')" > .dev.vars
+echo "ANTHROPIC_API_KEY=sk-ant-..." >> .dev.vars
+
+npm run dev               # wrangler dev op http://127.0.0.1:8787
 ```
 
-GitHub Actions runt dit automatisch vóór elke deploy.
+Voor admin-test lokaal: handmatig een user in D1 invoegen met
+`pw_hash` van `scripts/create-first-user.sh` (of via hashPassword in een
+node-snippet).
+
+## Eerste-keer-deploy (productie)
+
+1. `wrangler login` (eenmalig)
+2. `wrangler d1 create inijmegen-cms` → `database_id` in `wrangler.toml` zetten
+3. `wrangler r2 bucket create inijmegen-pdc`
+4. `wrangler secret put SESSION_SECRET` (random 32-byte hex)
+5. `wrangler secret put ANTHROPIC_API_KEY`
+6. `wrangler secret put RESEND_API_KEY`
+7. `npm run db:apply:remote && npm run seed:remote`
+8. `bash scripts/seed-pdc.sh remote` (oude PDC-PDFs → R2 + D1)
+9. `git push` of `npm run deploy`
+10. `bash scripts/create-first-user.sh "<naam>" <email> admin` → reset-link openen
 
 ## Repo-structuur
 
 ```
 .
-├── wrangler.toml        # Worker-config (html_handling auto-trailing-slash)
-├── .assetsignore        # node_modules + build.py + CLAUDE.md → niet als asset
-├── .github/workflows/
-│   └── deploy.yml       # build + deploy bij push naar main
-├── build.py             # statische page-generator
-├── _headers             # security + cache-control
-├── robots.txt
-├── sitemap.xml
-├── index.html           # (gegenereerd) — Home
-├── stichting.html       # (gegenereerd) — Over de stichting
-├── bestuur.html         # (gegenereerd) — Bestuur
-├── beleidsplan.html     # (gegenereerd) — Beleidsplan
-├── voorwaarden.html     # (gegenereerd) — Voorwaarden bijdrage
-├── jaarstukken.html     # (gegenereerd) — Jaarstukken (PDC-lijst)
-├── 404.html             # (gegenereerd)
-├── assets/
-│   ├── css/style.css
-│   ├── img/             # hero-foto's + favicon
-│   └── js/
-└── pdc/                 # alle jaarstukken-PDFs (PDC)
+├── wrangler.toml          # Worker-config met D1 + R2 bindings
+├── package.json
+├── tsconfig.json
+├── schema/
+│   ├── 001_init.sql       # tabellen
+│   └── 002_seed.sql       # initiële pages + settings
+├── scripts/
+│   ├── seed-pdc.sh        # bestaande pdc/-PDF's → R2 + D1
+│   └── create-first-user.sh
+├── src/
+│   ├── index.ts           # Hono entry, routing, security headers
+│   ├── env.ts             # Env types + SessionUser
+│   ├── lib/
+│   │   ├── password.ts    # PBKDF2 hash + verify
+│   │   ├── session.ts     # signed cookie, requireAuth middleware
+│   │   ├── db.ts          # query helpers + audit()
+│   │   ├── markdown.ts    # marked + sanitize + interpolate
+│   │   ├── html.ts        # html`` tagged template (auto-escape)
+│   │   ├── cache.ts       # purgePaths via Workers Cache API
+│   │   └── mail.ts        # Resend voor reset/uitnodigingen
+│   ├── routes/
+│   │   ├── public.ts      # publieke site + PDC-streaming + sitemap
+│   │   ├── auth.ts        # login, logout, forgot, reset
+│   │   ├── admin.ts       # dashboard, pages, jaarstukken, settings, users
+│   │   └── ai.ts          # Claude Haiku transform endpoint
+│   └── views/
+│       ├── layout.ts      # publieke site layout
+│       ├── public.ts      # render publieke pagina + 404
+│       ├── admin-layout.ts
+│       └── admin-views.ts # alle admin-screens
+├── public/
+│   ├── assets/
+│   │   ├── css/style.css  # publieke site
+│   │   ├── css/admin.css  # admin UI
+│   │   ├── js/admin.js    # admin UI (AI-paneel + preview)
+│   │   └── img/           # hero-foto's + favicon
+│   └── robots.txt
+└── pdc/                   # tijdelijk: bron-PDF's vóór seed-pdc.sh
 ```
 
-## Inhoudelijke informatie
+## Content-model
 
-- ANBI-stichting (KvK 41056683, RSIN 806308527)
-- Opgericht 23 mei 1984
-- Bestuur: René Wilderom (vz), Hans Hendriks (penn.), Marijke van Veen (secr.)
-- Onbezoldigd bestuur
-- IBAN NL73 ABNA 0498 5374 39
-- Nauw verbonden met Rotaryclub Nijmegen Stad en Land
+- **`pages`**: één rij per slug (`/`, `/stichting`, etc.). Velden voor
+  hero (eyebrow/title/lede/image/compact), SEO (title/description) en
+  hoofdtekst (`body_md` in markdown).
+- **`settings`**: key-value voor stichting-gegevens die overal terugkomen
+  (kvk, rsin, iban, voorzitter, contact_secretaris, ...). Tekst op
+  pagina's gebruikt `{{kvk}}`-style placeholders die voor render worden
+  vervangen. Wijzig één keer in Gegevens → het past zich overal aan.
+- **`jaarstukken`**: één rij per jaar, met R2-key naar de PDF. Upload via
+  admin → R2 `put` + D1 upsert + cache purge van `/jaarstukken`.
 
-## PDC (jaarstukken)
+## AI-stijlgids
 
-9 PDF's in `pdc/`. Lijst staat in `build.py → PDC`. Bij nieuw boekjaar:
-- PDF in `pdc/` zetten
-- Entry toevoegen aan de `PDC`-lijst bovenin `build.py`
-- Commit + push → auto-deploy
+Staat in `src/routes/ai.ts` als `STYLE_GUIDE`. Vier vaste acties
+(improve/shorten/formal/check) + vrij instructie-veld. Model:
+`claude-haiku-4-5-20251001`. AI krijgt nooit secrets — alleen de
+geselecteerde tekst + de stijlgids.
 
 ## Bekende keuzes
 
-### `_redirects` niet gebruikt
-Workers Static Assets ondersteunt `_redirects` met status `200`-rewrite
-niet betrouwbaar (zie de issue die we bij nijmegenduckstad.nl hadden).
-Gebruik in plaats daarvan `html_handling = "auto-trailing-slash"` in
-wrangler.toml — clean URLs zonder extra config.
-
-### `_headers` blijft wel
-Workers Static Assets respecteert het Pages-format `_headers`-bestand
-voor security-headers en cache-control.
-
-### `.assetsignore` is cruciaal
-Anders worden `node_modules/` (workerd-binary 122 MiB) én `CLAUDE.md` /
-`build.py` mee-geüpload als asset.
+- **Geen `_redirects`**: handmatig in `public.ts` als 301-handler.
+- **`run_worker_first = true`** zodat Worker code voor assets draait
+  (security headers + admin auth).
+- **PBKDF2 i.p.v. bcrypt/argon2**: native via WebCrypto, geen wasm.
+- **Hono i.p.v. custom router**: handler-compositie + middleware,
+  TypeScript-vriendelijk, ~13kb.
+- **Cache purge per pagina** (geen Cache-Tag API, want die vereist
+  Enterprise). `cache.delete` per slug is voldoende.
 
 ## Changelog
 
-- **2026-06-17**: Eerste commit. Inhoud + 9 PDF's overgenomen uit de
-  WordPress-site, structuur opnieuw opgebouwd met `build.py` +
-  wrangler/GH-Actions.
+- **2026-06-19**: Statische site → dynamische Worker. D1 voor content,
+  R2 voor PDC, admin met email/wachtwoord, AI-hulp via Claude Haiku
+  4.5. `build.py` verwijderd.
+- **2026-06-17**: Eerste statische versie.

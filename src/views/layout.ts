@@ -1,12 +1,42 @@
-<!DOCTYPE html>
+import { html, raw, type HtmlString } from '../lib/html';
+import type { PageRow } from '../lib/db';
+
+export interface LayoutOpts {
+  page: {
+    title: string;
+    description: string;
+    hero_image: string;
+    hero_eyebrow: string;
+    hero_title: string;
+    hero_lede: string;
+    hero_compact: boolean;
+    slug: string;
+  };
+  navPages: PageRow[];
+  settings: Record<string, string>;
+  body: HtmlString;
+  extraHead?: HtmlString;
+}
+
+function nav(navPages: PageRow[], activeSlug: string): HtmlString {
+  return html`${navPages.map(
+    (p) => html`<li><a class="${p.slug === activeSlug ? 'active' : ''}" href="${p.slug === '/' ? '/' : p.slug}">${p.nav_label}</a></li>`,
+  )}`;
+}
+
+export function renderLayout(opts: LayoutOpts): string {
+  const { page, navPages, settings, body, extraHead } = opts;
+  const heroCls = page.hero_compact ? 'hero--compact' : '';
+  const navItems = nav(navPages, page.slug);
+  const fullHtml = html`<!DOCTYPE html>
 <html lang="nl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pagina niet gevonden &middot; Gemeenschapsservice Nijmegen Stad en Land</title>
-<meta name="description" content="Deze pagina bestaat niet (meer).">
-<meta property="og:title" content="Pagina niet gevonden &middot; Gemeenschapsservice Nijmegen Stad en Land">
-<meta property="og:description" content="Deze pagina bestaat niet (meer).">
+<title>${raw(page.title)}</title>
+<meta name="description" content="${page.description}">
+<meta property="og:title" content="${raw(page.title)}">
+<meta property="og:description" content="${page.description}">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="nl_NL">
 <meta name="theme-color" content="#17458f">
@@ -15,6 +45,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/style.css">
+${extraHead ?? raw('')}
 </head>
 <body>
 <header class="site-header">
@@ -27,28 +58,23 @@
       <span></span><span></span><span></span>
     </button>
     <ul class="nav__links" id="navLinks">
-      <li><a class="" href="/">Home</a></li>
-      <li><a class="" href="/stichting">De stichting</a></li>
-      <li><a class="" href="/bestuur">Bestuur</a></li>
-      <li><a class="" href="/beleidsplan">Beleidsplan</a></li>
-      <li><a class="" href="/voorwaarden">Voorwaarden</a></li>
-      <li><a class="" href="/jaarstukken">Jaarstukken</a></li>
+      ${navItems}
     </ul>
   </nav>
 </header>
 
-<section class="hero hero--compact">
-  <div class="hero__bg" style="background-image:url('/assets/img/hero-home.jpeg')"></div>
+<section class="hero ${heroCls}">
+  <div class="hero__bg" style="background-image:url('/assets/img/${page.hero_image}')"></div>
   <div class="wrap hero__inner">
-    <span class="hero__eyebrow">404</span>
-    <h1>Deze pagina bestaat niet</h1>
-    <p class="lede">Misschien is de link verouderd. Keer terug naar <a href="/">de homepage</a> of bekijk de <a href="/jaarstukken">jaarstukken</a>.</p>
+    <span class="hero__eyebrow">${page.hero_eyebrow}</span>
+    <h1>${raw(page.hero_title)}</h1>
+    <p class="lede">${raw(page.hero_lede)}</p>
   </div>
 </section>
 
 <main class="section">
   <div class="wrap">
-
+${body}
   </div>
 </main>
 
@@ -62,12 +88,12 @@
       </div>
       <div>
         <h4>Bestuur</h4>
-        <p>Secretaris<br>Lodewijkstraat 8<br>6585 KM Mook</p>
-        <p>Penningmeester<br>Herckenrathweg 6<br>6681 DD Bemmel</p>
+        <p>${raw(settings.contact_secretaris ?? 'Secretaris<br>Lodewijkstraat 8<br>6585 KM Mook')}</p>
+        <p>${raw(settings.contact_penningmeester ?? 'Penningmeester<br>Herckenrathweg 6<br>6681 DD Bemmel')}</p>
       </div>
       <div>
         <h4>Gegevens</h4>
-        <p>KvK 41056683<br>RSIN 806308527<br>IBAN NL73 ABNA 0498 5374 39</p>
+        <p>KvK ${settings.kvk ?? '41056683'}<br>RSIN ${settings.rsin ?? '806308527'}<br>IBAN ${raw(settings.iban ?? 'NL73&nbsp;ABNA&nbsp;0498&nbsp;5374&nbsp;39')}</p>
       </div>
       <div>
         <h4>Documenten</h4>
@@ -77,7 +103,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; <span id="year">2026</span> Stichting Gemeenschapsservice Nijmegen Stad en Land</span>
+      <span>&copy; <span id="year"></span> Stichting Gemeenschapsservice Nijmegen Stad en Land</span>
       <span>Opgericht 23 mei 1984 &middot; ANBI</span>
     </div>
   </div>
@@ -93,4 +119,6 @@
   });
 </script>
 </body>
-</html>
+</html>`;
+  return fullHtml.toString();
+}

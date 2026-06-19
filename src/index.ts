@@ -1,64 +1,69 @@
 /**
- * Minimal Worker-entrypoint voor inijmegen.nl.
+ * Worker-entrypoint voor inijmegen.nl.
  *
- * Doet drie dingen:
- *   1. www.inijmegen.nl → 301 naar de apex (canonical).
- *   2. Security-headers op elke response (Workers Static Assets
- *      ondersteunt `_headers` op papier, maar in de praktijk werd het
- *      hier genegeerd; we zetten ze hier direct).
- *   3. Lange cache-control op statische assets (/assets/* en /pdc/*).
+ * Vroeger was dit een dunne proxy naar Workers Static Assets. Nu host
+ * de Worker zelf:
+ *   - de publieke site (server-side gerenderd uit D1 + R2)
+ *   - /admin/* voor het bestuur (login, pagina-edit, jaarstukken, AI)
  *
- * Voor al het andere: pure proxy naar de Static Assets binding — geen
- * eigen routing, geen API. Resultaat is functioneel identiek aan een
- * static-only Worker, plus security-headers + www-redirect.
+ * Statische assets (CSS, hero-foto's, favicon, admin.js) blijven via
+ * de ASSETS-binding, gemount onder /assets/*.
  */
 
-export interface Env {
-  ASSETS: Fetcher;
-}
+import { Hono } from 'hono';
+import type { AppContext } from './env';
+import { publicApp } from './routes/public';
+import { authApp } from './routes/auth';
+import { adminApp } from './routes/admin';
+import { aiApp } from './routes/ai';
+import { render404 } from './views/public';
+
+const app = new Hono<AppContext>();
+
+// 1. www → apex.
+app.use('*', async (c, next) => {
+  const url = new URL(c.req.url);
+  if (url.hostname === `www.${c.env.SITE_HOST}`) {
+    url.hostname = c.env.SITE_HOST;
+    return c.redirect(url.toString(), 301);
+  }
+  return next();
+});
+
+// 2. Security-headers op alle Worker-responses (assets-binding zet eigen
+// headers via _headers).
+app.use('*', async (c, next) => {
+  await next();
+  const h = c.res.headers;
+  h.set('X-Content-Type-Options', 'nosniff');
+  h.set('X-Frame-Options', 'SAMEORIGIN');
+  h.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  h.set(
+    'Permissions-Policy',
+    'geolocation=(), microphone=(), camera=(), payment=()',
+  );
+  h.set(
+    'Strict-Transport-Security',
+    'max-age=31536000; includeSubDomains',
+  );
+});
+
+// 3. Statische assets (CSS/JS/img). Worker delegeert naar ASSETS-binding.
+app.get('/assets/*', (c) => c.env.ASSETS.fetch(c.req.raw));
+app.get('/robots.txt', (c) => c.env.ASSETS.fetch(c.req.raw));
+app.get('/favicon.ico', (c) => c.env.ASSETS.fetch(c.req.raw));
+
+// 4. Admin (login + dashboard).
+app.route('/admin', authApp);
+app.route('/admin', adminApp);
+app.route('/admin/api/ai', aiApp);
+
+// 5. Publieke site.
+app.route('/', publicApp);
+
+// 6. Fallback 404 (rendert via D1 voor consistente layout).
+app.notFound(async (c) => render404(c));
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    const url = new URL(request.url);
-
-    // 1. www → apex (preserveert pad + query).
-    if (url.hostname === 'www.inijmegen.nl') {
-      url.hostname = 'inijmegen.nl';
-      return Response.redirect(url.toString(), 301);
-    }
-
-    // 2. Asset ophalen.
-    const res = await env.ASSETS.fetch(request);
-
-    // 3. Headers verrijken. Cloudflare cached responses; daarom altijd
-    // een nieuwe Response bouwen i.p.v. de live response te muteren.
-    const h = new Headers(res.headers);
-
-    h.set('X-Content-Type-Options', 'nosniff');
-    h.set('X-Frame-Options', 'SAMEORIGIN');
-    h.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-    h.set(
-      'Permissions-Policy',
-      'geolocation=(), microphone=(), camera=(), payment=()',
-    );
-    h.set(
-      'Strict-Transport-Security',
-      'max-age=31536000; includeSubDomains',
-    );
-
-    // 4. Cache-control per pad. Default (HTML-pagina's) blijft op de
-    // wrangler-default (must-revalidate) zodat content-updates direct
-    // doorkomen.
-    if (url.pathname.startsWith('/assets/')) {
-      h.set('Cache-Control', 'public, max-age=31536000, immutable');
-    } else if (url.pathname.startsWith('/pdc/')) {
-      h.set('Cache-Control', 'public, max-age=2592000');
-    }
-
-    return new Response(res.body, {
-      status: res.status,
-      statusText: res.statusText,
-      headers: h,
-    });
-  },
-} satisfies ExportedHandler<Env>;
+  fetch: app.fetch,
+};
