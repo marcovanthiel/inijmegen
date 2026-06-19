@@ -30,11 +30,11 @@ app.use('*', async (c, next) => {
   return next();
 });
 
-// 2. Security-headers op alle Worker-responses (assets-binding zet eigen
-// headers via _headers).
+// 2. Security-headers op alle Worker-responses. Headers van ASSETS-responses
+// zijn immutable, daarom altijd een nieuw Response-object bouwen.
 app.use('*', async (c, next) => {
   await next();
-  const h = c.res.headers;
+  const h = new Headers(c.res.headers);
   h.set('X-Content-Type-Options', 'nosniff');
   h.set('X-Frame-Options', 'SAMEORIGIN');
   h.set('Referrer-Policy', 'strict-origin-when-cross-origin');
@@ -46,6 +46,11 @@ app.use('*', async (c, next) => {
     'Strict-Transport-Security',
     'max-age=31536000; includeSubDomains',
   );
+  c.res = new Response(c.res.body, {
+    status: c.res.status,
+    statusText: c.res.statusText,
+    headers: h,
+  });
 });
 
 // 3. Statische assets (CSS/JS/img). Worker delegeert naar ASSETS-binding.
