@@ -13,3 +13,7 @@ binding = "ASSETS"
 # /stichting.html → 308 naar /stichting.
 html_handling = "auto-trailing-slash"
 not_found_handling = "404-page"
+# Worker-handler MOET vóór de asset-serving runnen — anders skipt
+# Cloudflare onze code voor elke matching static asset en lopen
+# security-headers + www-redirect mis.
+run_worker_first = true
