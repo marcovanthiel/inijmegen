@@ -67,18 +67,6 @@ export async function listJaarstukken(env: Env): Promise<JaarstukRow[]> {
   return res.results ?? [];
 }
 
-export async function getSetting(
-  env: Env,
-  key: string,
-): Promise<string | null> {
-  const row = await env.DB.prepare(
-    'SELECT value FROM settings WHERE key = ?',
-  )
-    .bind(key)
-    .first<{ value: string }>();
-  return row?.value ?? null;
-}
-
 export async function getSettings(
   env: Env,
 ): Promise<Record<string, string>> {

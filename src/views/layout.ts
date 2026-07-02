@@ -33,9 +33,9 @@ export function renderLayout(opts: LayoutOpts): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${raw(page.title)}</title>
+<title>${page.title}</title>
 <meta name="description" content="${page.description}">
-<meta property="og:title" content="${raw(page.title)}">
+<meta property="og:title" content="${page.title}">
 <meta property="og:description" content="${page.description}">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="nl_NL">
@@ -67,8 +67,8 @@ ${extraHead ?? raw('')}
   <div class="hero__bg" style="background-image:url('/assets/img/${page.hero_image}')"></div>
   <div class="wrap hero__inner">
     <span class="hero__eyebrow">${page.hero_eyebrow}</span>
-    <h1>${raw(page.hero_title)}</h1>
-    <p class="lede">${raw(page.hero_lede)}</p>
+    <h1>${page.hero_title}</h1>
+    <p class="lede">${page.hero_lede}</p>
   </div>
 </section>
 
@@ -109,15 +109,7 @@ ${body}
   </div>
 </footer>
 
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-  const t = document.getElementById('navToggle');
-  const l = document.getElementById('navLinks');
-  if (t && l) t.addEventListener('click', () => {
-    const open = l.classList.toggle('open');
-    t.setAttribute('aria-expanded', String(open));
-  });
-</script>
+<script src="/assets/js/site.js" defer></script>
 </body>
 </html>`;
   return fullHtml.toString();

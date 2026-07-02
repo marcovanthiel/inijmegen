@@ -29,8 +29,12 @@ authApp.post('/login', async (c) => {
     .bind(email)
     .first<{ id: number; pw_hash: string }>();
 
-  // Constant-tijd: hash een dummy als gebruiker niet bestaat.
-  const dummy = '$pbkdf2$210000$AAAA$AAAA';
+  // Constant-tijd: hash een dummy als gebruiker niet bestaat. Geldig formaat
+  // (pbkdf2$<iter>$<b64 salt>$<b64 hash>, 100k = de echte ITERATIONS) zodat de
+  // format-guard in verifyPassword niet vóór derive() faalt — anders verraadt de
+  // responstijd of een e-mailadres bestaat.
+  const dummy =
+    'pbkdf2$100000$AAAAAAAAAAAAAAAAAAAAAA==$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=';
   const ok = user
     ? await verifyPassword(password, user.pw_hash)
     : (await verifyPassword(password, dummy), false);

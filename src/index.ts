@@ -45,6 +45,24 @@ app.use('*', async (c, next) => {
     'Strict-Transport-Security',
     'max-age=31536000; includeSubDomains',
   );
+  // CSP: script-src zonder 'unsafe-inline' (het enige inline script is
+  // geëxternaliseerd naar /assets/js/site.js) → geïnjecteerde inline scripts
+  // draaien niet. Admin laadt Quill/marked van jsDelivr; publieke site Google Fonts.
+  h.set(
+    'Content-Security-Policy',
+    [
+      "default-src 'self'",
+      "base-uri 'self'",
+      "object-src 'none'",
+      "frame-ancestors 'self'",
+      "img-src 'self' data: blob:",
+      "script-src 'self' https://cdn.jsdelivr.net",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net",
+      "font-src 'self' https://fonts.gstatic.com",
+      "connect-src 'self'",
+      "form-action 'self'",
+    ].join('; '),
+  );
   c.res = new Response(c.res.body, {
     status: c.res.status,
     statusText: c.res.statusText,
