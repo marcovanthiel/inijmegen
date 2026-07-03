@@ -104,7 +104,7 @@ ${body}
     </div>
     <div class="footer-bottom">
       <span>&copy; <span id="year"></span> Stichting Gemeenschapsservice Nijmegen Stad en Land</span>
-      <span>Opgericht 23 mei 1984 &middot; ANBI</span>
+      <span>Opgericht 23 mei 1984 &middot; ANBI <span class="footer-version" id="siteVersion" style="opacity:.6;font-size:.9em"></span></span>
     </div>
   </div>
 </footer>
