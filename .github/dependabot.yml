@@ -1,14 +1,38 @@
+# Dependabot — wekelijks (maandagochtend). Minor/patch gegroepeerd; majors apart.
+# @cloudflare/workers-types-major genegeerd: wrangler 4.x eist v4-types als peer.
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 10
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'Europe/Amsterdam'
+    open-pull-requests-limit: 5
+    labels:
+      - 'dependencies'
+    commit-message:
+      prefix: 'deps'
     groups:
       minor-patch:
-        update-types: ["minor", "patch"]
-  - package-ecosystem: "github-actions"
-    directory: "/"
+        applies-to: version-updates
+        update-types:
+          - 'minor'
+          - 'patch'
+    ignore:
+      - dependency-name: '@cloudflare/workers-types'
+        update-types: ['version-update:semver-major']
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'Europe/Amsterdam'
+    open-pull-requests-limit: 3
+    labels:
+      - 'dependencies'
+      - 'ci'
+    commit-message:
+      prefix: 'deps(ci)'
