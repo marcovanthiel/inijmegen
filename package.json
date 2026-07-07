@@ -11,12 +11,12 @@
     "seed:remote": "wrangler d1 execute inijmegen-cms --remote --file=./schema/002_seed.sql"
   },
   "dependencies": {
-    "hono": "^4.6.0",
-    "marked": "^14.1.0"
+    "hono": "^4.12.28",
+    "marked": "^18.0.5"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250612.0",
-    "typescript": "^5.5.0",
-    "wrangler": "^4.0.0"
+    "@cloudflare/workers-types": "^4",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.107.0"
   }
 }
