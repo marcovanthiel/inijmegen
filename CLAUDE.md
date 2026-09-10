@@ -150,9 +150,12 @@ node-snippet).
   hero (eyebrow/title/lede/image/compact), SEO (title/description) en
   hoofdtekst (`body_md` in markdown).
 - **`settings`**: key-value voor stichting-gegevens die overal terugkomen
-  (kvk, rsin, iban, voorzitter, contact_secretaris, ...). Tekst op
-  pagina's gebruikt `{{kvk}}`-style placeholders die voor render worden
-  vervangen. Wijzig één keer in Gegevens → het past zich overal aan.
+  (kvk, rsin, iban, voorzitter, contact_voorzitter, contact_secretaris,
+  contact_penningmeester, ...). Tekst op pagina's gebruikt `{{kvk}}`-style
+  placeholders die voor render worden vervangen. Wijzig één keer in
+  Gegevens → het past zich overal aan. De drie `contact_*`-keys voeden de
+  footer (HTML toegestaan). Afspraak bestuur (sept 2026): géén fysieke
+  adressen op de site, alleen e-mailadressen.
 - **`jaarstukken`**: één rij per jaar, met R2-key naar de PDF. Upload via
   admin → R2 `put` + D1 upsert + cache purge van `/jaarstukken`.
 
@@ -176,6 +179,15 @@ geselecteerde tekst + de stijlgids.
 
 ## Changelog
 
+- **2026-09-10**: Tekstwijzigingen bestuur (doc MvV/HH): nieuwe
+  doelstellingstekst op /stichting, e-mailadres per bestuurslid op
+  /bestuur, fysieke adressen overal verwijderd (settings + footer +
+  fallbacks + seed), nieuwe setting `contact_voorzitter`. Live D1 direct
+  bijgewerkt via `wrangler d1 execute --remote` (edge-cache verloopt
+  binnen 5 min vanzelf; audit_log heeft van zulke directe edits géén
+  regel). Fix: `@cloudflare/workers-types` → v5 (peer-eis wrangler
+  4.116; npm ci in CI faalde op ERESOLVE) en de dependabot-ignore voor
+  die major verwijderd.
 - **2026-06-19**: Statische site → dynamische Worker. D1 voor content,
   R2 voor PDC, admin met email/wachtwoord, AI-hulp via Claude Haiku
   4.5. `build.py` verwijderd.
