@@ -179,6 +179,12 @@ geselecteerde tekst + de stijlgids.
 
 ## Changelog
 
+- **2026-09-10** (2): Onderhoudsronde: hono 4.13.7, marked 18.0.12,
+  wrangler 4.130, typescript 7.0.2, setup-node v7 (SHA-gepind);
+  dependabot-PR's #4/#6/#13/#14 als één commit verwerkt en gesloten.
+  `npm audit` en dependabot-alerts: 0. Let op: `overrides.sharp ^0.35.4`
+  in package.json vangt libheif-CVE's onder miniflare af — verwijderen
+  zodra miniflare zelf sharp ≥ 0.35.4 meelevert.
 - **2026-09-10**: Tekstwijzigingen bestuur (doc MvV/HH): nieuwe
   doelstellingstekst op /stichting, e-mailadres per bestuurslid op
   /bestuur, fysieke adressen overal verwijderd (settings + footer +
