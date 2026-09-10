@@ -191,6 +191,9 @@ Marco de domeinregistratie rond heeft. Stappenplan bij dat moment:
 
 ## Changelog
 
+- **2026-09-10** (4): Toegankelijkheidsverklaring toegevoegd op
+  `/toegankelijkheid` (D1-pagina, in_nav 0, ook in seed) + footerlink in
+  kolom Documenten; streven WCAG 2.2 AA, melden via de secretaris.
 - **2026-09-10** (3): Naamswijziging: de site heet **Goede Doelen
   Nijmegen Stad en Land**, met de stichtingsnaam als subtitel in header,
   footer en admin. SITE_NAME-var en paginatitels (D1 + seed) mee. Mobiel

@@ -157,3 +157,37 @@ Zowel de Raad van Advies als het bestuur gebruiken de onderstaande toetsstenen b
    '## Verantwoording in PDF
 
 Hieronder vindt u de jaarstukken van de stichting van de afgelopen jaren. Klik op een document om de PDF te openen of te downloaden.');
+
+-- Toegankelijkheidsverklaring als publieke pagina (niet in het hoofdmenu).
+INSERT OR REPLACE INTO pages
+  (slug, nav_label, nav_order, in_nav, title, description,
+   hero_image, hero_eyebrow, hero_title, hero_lede, hero_compact, body_md)
+VALUES
+  ('/toegankelijkheid', 'Toegankelijkheid', 6, 0,
+   'Toegankelijkheidsverklaring · Goede Doelen Nijmegen Stad en Land',
+   'Toegankelijkheidsverklaring van deze website: streven naar WCAG 2.2 niveau AA, genomen maatregelen en hoe u een probleem meldt.',
+   'hero-stichting-classic.jpeg',
+   'Toegankelijkheid',
+   'Toegankelijkheidsverklaring',
+   'Deze website wil voor iedereen bruikbaar zijn, ook voor bezoekers met een beperking of met hulpsoftware.',
+   1,
+   '## Onze inzet
+
+De Stichting Gemeenschapsservice Nijmegen Stad en Land wil dat deze website voor iedereen bruikbaar is. Dat geldt ook voor bezoekers met een beperking of met hulpsoftware. Wij streven naar de Web Content Accessibility Guidelines (WCAG) 2.2, niveau AA. Dat sluit aan bij de European Accessibility Act en de Europese norm EN 301 549.
+
+## Maatregelen
+
+Wij nemen de volgende maatregelen:
+
+- **Toegankelijk ontwerp.** Formuliervelden hebben duidelijke labels. Tekst en achtergrond hebben voldoende contrast. De website is volledig met het toetsenbord te bedienen.
+- **Periodieke controle.** Wij controleren de website periodiek met automatische toetsen op toegankelijkheid.
+
+## Status
+
+Naar beste weten voldoet deze website geheel of grotendeels aan WCAG 2.2, niveau AA. Er zijn op dit moment geen afwijkingen bekend.
+
+## Probleem melden
+
+Loopt u toch tegen een probleem aan? Meld dit dan bij de secretaris via [marijke.van.veen@wxs.nl](mailto:marijke.van.veen@wxs.nl). Wij reageren zo snel mogelijk en verhelpen het probleem waar dat kan.
+
+Deze verklaring is opgesteld op 10 september 2026.');

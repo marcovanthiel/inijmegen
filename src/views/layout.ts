@@ -100,7 +100,8 @@ ${body}
         <h4>Documenten</h4>
         <p><a href="/jaarstukken">Jaarstukken</a><br>
         <a href="/beleidsplan">Beleidsplan</a><br>
-        <a href="/voorwaarden">Voorwaarden geldelijke bijdrage</a></p>
+        <a href="/voorwaarden">Voorwaarden geldelijke bijdrage</a><br>
+        <a href="/toegankelijkheid">Toegankelijkheidsverklaring</a></p>
       </div>
     </div>
     <div class="footer-bottom">
