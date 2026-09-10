@@ -15,7 +15,7 @@
     "marked": "^18.0.7"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4",
+    "@cloudflare/workers-types": "^5.20260910.1",
     "typescript": "^6.0.3",
     "wrangler": "^4.116.0"
   }
