@@ -23,7 +23,7 @@ INSERT OR REPLACE INTO pages
    hero_image, hero_eyebrow, hero_title, hero_lede, hero_compact, body_md)
 VALUES
   ('/', 'Home', 0, 1,
-   'Stichting Gemeenschapsservice Nijmegen Stad en Land',
+   'Goede Doelen Nijmegen Stad en Land · Stichting Gemeenschapsservice',
    'Statutaire doelstelling, beleid en verantwoording van de Stichting Gemeenschapsservice Nijmegen Stad en Land.',
    'hero-home-classic.jpeg',
    'Service Above Self',
@@ -33,7 +33,7 @@ VALUES
    '<div class="card"><h2>Onze doelstelling</h2><p>De stichting heeft de volgende statutaire doelstelling:</p><blockquote><p>Haar financiële middelen, zo veel als naar het oordeel van het bestuur mogelijk, te besteden voor doeleinden, die een sociaal&nbsp;–&nbsp;charitatief karakter hebben.</p></blockquote><p>Hoe dan ook dient een zeer overwegend deel van de geldmiddelen van de stichting dienstbaar gemaakt te worden aan de behartiging van doelstellingen die als van algemeen maatschappelijk belang kunnen worden beschouwd.</p><p>Deze doelstellingen mogen liggen zowel in Nederland als daarbuiten.</p></div>'),
 
   ('/stichting', 'De stichting', 1, 1,
-   'De stichting · Gemeenschapsservice Nijmegen Stad en Land',
+   'De stichting · Goede Doelen Nijmegen Stad en Land',
    'Doelstelling, oprichtingsgegevens en contactgegevens van de stichting.',
    'hero-stichting-classic.jpeg',
    'Over ons',
@@ -64,7 +64,7 @@ Iedere aanvraag wordt beoordeeld aan de hand van een aantal voorwaarden. Welke d
 U vindt de contactgegevens op de pagina [Bestuur](/bestuur).'),
 
   ('/bestuur', 'Bestuur', 2, 1,
-   'Bestuur · Gemeenschapsservice Nijmegen Stad en Land',
+   'Bestuur · Goede Doelen Nijmegen Stad en Land',
    'Samenstelling van het bestuur en beloningsbeleid.',
    'hero-bestuur-classic.jpeg',
    'Bestuur',
@@ -82,7 +82,7 @@ U vindt de contactgegevens op de pagina [Bestuur](/bestuur).'),
 Het bestuur ontvangt voor haar werkzaamheden geen beloning. De organisatiekosten worden bewust zo laag mogelijk gehouden, zodat de fondsen zoveel mogelijk ten goede komen aan de gesteunde doelen.'),
 
   ('/beleidsplan', 'Beleidsplan', 3, 1,
-   'Beleidsplan · Gemeenschapsservice Nijmegen Stad en Land',
+   'Beleidsplan · Goede Doelen Nijmegen Stad en Land',
    'Beleidsplan over fondsenwerving, bestedingsbeleid en organisatiekosten.',
    'hero-bestuur-classic.jpeg',
    'Beleidsplan',
@@ -116,7 +116,7 @@ Met betrekking tot de organisatiekosten wordt het bestaande beleid om deze zo la
 De financiële verantwoording over elk boekjaar wordt opgenomen in een jaarverslag. Een samenvatting van het jaarverslag is via deze website beschikbaar onder [Jaarstukken](/jaarstukken).'),
 
   ('/voorwaarden', 'Voorwaarden', 4, 1,
-   'Voorwaarden voor geldelijke bijdrage · Gemeenschapsservice Nijmegen Stad en Land',
+   'Voorwaarden voor geldelijke bijdrage · Goede Doelen Nijmegen Stad en Land',
    'Welke informatie moet een aanvraag bevatten, en welke toetsstenen gebruikt het bestuur.',
    'hero-home-classic.jpeg',
    'Voorwaarden',
@@ -147,7 +147,7 @@ Zowel de Raad van Advies als het bestuur gebruiken de onderstaande toetsstenen b
 - Bij beoordeling wordt de ethische aanvaardbaarheid van het doel betrokken.'),
 
   ('/jaarstukken', 'Jaarstukken', 5, 1,
-   'Jaarstukken · Gemeenschapsservice Nijmegen Stad en Land',
+   'Jaarstukken · Goede Doelen Nijmegen Stad en Land',
    'Jaarstukken van de stichting — openbare verantwoording in PDF.',
    'hero-stichting-classic.jpeg',
    'Verantwoording',

@@ -12,8 +12,8 @@ export function renderLogin(opts: {
 }): string {
   const body = html`<div class="login-card">
   <div class="login-card__brand">
-    <strong>Stichting Gemeenschapsservice</strong>
-    <span>Nijmegen Stad en Land</span>
+    <strong>Goede Doelen Nijmegen Stad en Land</strong>
+    <span>Stichting Gemeenschapsservice Nijmegen Stad en Land</span>
   </div>
   <h1>Inloggen</h1>
   ${opts.error ? html`<div class="flash flash--err">${opts.error}</div>` : raw('')}

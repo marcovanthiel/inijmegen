@@ -51,8 +51,8 @@ ${extraHead ?? raw('')}
 <header class="site-header">
   <nav class="nav" aria-label="Hoofdmenu">
     <a class="nav__logo" href="/" aria-label="Home">
-      <span>Stichting Gemeenschapsservice</span>
-      <small>Nijmegen Stad en Land</small>
+      <span>Goede Doelen Nijmegen Stad en Land</span>
+      <small>Stichting Gemeenschapsservice Nijmegen Stad en Land</small>
     </a>
     <button class="nav__toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -83,7 +83,7 @@ ${body}
     <div class="footer-grid">
       <div>
         <h4>Contact</h4>
-        <p>Stichting Gemeenschapsservice<br>Nijmegen Stad en Land</p>
+        <p>Goede Doelen Nijmegen Stad en Land<br><span class="muted">Stichting Gemeenschapsservice Nijmegen Stad en Land</span></p>
         <p class="muted">Aanvragen via de <a href="/voorwaarden">voorwaarden-pagina</a>.</p>
       </div>
       <div>
