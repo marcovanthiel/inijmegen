@@ -1,4 +1,5 @@
 import { html, raw, type HtmlString } from '../lib/html';
+import { obfuscateEmails } from '../lib/obfuscate';
 import type { PageRow } from '../lib/db';
 
 export interface LayoutOpts {
@@ -88,9 +89,9 @@ ${body}
       </div>
       <div>
         <h4>Bestuur</h4>
-        <p>${raw(settings.contact_voorzitter ?? 'Voorzitter: René Wilderom<br><a href="mailto:renewilderom@gmail.com">renewilderom@gmail.com</a>')}</p>
-        <p>${raw(settings.contact_secretaris ?? 'Secretaris: Marijke van Veen<br><a href="mailto:marijke.van.veen@wxs.nl">marijke.van.veen@wxs.nl</a>')}</p>
-        <p>${raw(settings.contact_penningmeester ?? 'Penningmeester: Hans Hendriks<br><a href="mailto:hans.c.m.hendriks@gmail.com">hans.c.m.hendriks@gmail.com</a>')}</p>
+        <p>${raw(settings.contact_voorzitter ?? 'Voorzitter: René Wilderom<br><a href="mailto:voorzitter@inijmegen.nl">voorzitter@inijmegen.nl</a>')}</p>
+        <p>${raw(settings.contact_secretaris ?? 'Secretaris: Marijke van Veen<br><a href="mailto:secretaris@inijmegen.nl">secretaris@inijmegen.nl</a>')}</p>
+        <p>${raw(settings.contact_penningmeester ?? 'Penningmeester: Hans Hendriks<br><a href="mailto:penningmeester@inijmegen.nl">penningmeester@inijmegen.nl</a>')}</p>
       </div>
       <div>
         <h4>Gegevens</h4>
@@ -114,5 +115,5 @@ ${body}
 <script src="/assets/js/site.js" defer></script>
 </body>
 </html>`;
-  return fullHtml.toString();
+  return obfuscateEmails(fullHtml.toString());
 }

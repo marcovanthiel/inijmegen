@@ -12,9 +12,9 @@ INSERT OR REPLACE INTO settings (key, value) VALUES
   ('voorzitter', 'René Wilderom'),
   ('penningmeester', 'Hans Hendriks'),
   ('secretaris', 'Marijke van Veen'),
-  ('contact_voorzitter', 'Voorzitter: René Wilderom<br><a href="mailto:renewilderom@gmail.com">renewilderom@gmail.com</a>'),
-  ('contact_secretaris', 'Secretaris: Marijke van Veen<br><a href="mailto:marijke.van.veen@wxs.nl">marijke.van.veen@wxs.nl</a>'),
-  ('contact_penningmeester', 'Penningmeester: Hans Hendriks<br><a href="mailto:hans.c.m.hendriks@gmail.com">hans.c.m.hendriks@gmail.com</a>');
+  ('contact_voorzitter', 'Voorzitter: René Wilderom<br><a href="mailto:voorzitter@inijmegen.nl">voorzitter@inijmegen.nl</a>'),
+  ('contact_secretaris', 'Secretaris: Marijke van Veen<br><a href="mailto:secretaris@inijmegen.nl">secretaris@inijmegen.nl</a>'),
+  ('contact_penningmeester', 'Penningmeester: Hans Hendriks<br><a href="mailto:penningmeester@inijmegen.nl">penningmeester@inijmegen.nl</a>');
 
 -- ── Pages ───────────────────────────────────────────────────────────
 
@@ -73,9 +73,9 @@ U vindt de contactgegevens op de pagina [Bestuur](/bestuur).'),
    1,
    '## Samenstelling
 
-- **Voorzitter:** {{voorzitter}}, bereikbaar via [renewilderom@gmail.com](mailto:renewilderom@gmail.com)
-- **Secretaris:** {{secretaris}}, bereikbaar via [marijke.van.veen@wxs.nl](mailto:marijke.van.veen@wxs.nl)
-- **Penningmeester:** {{penningmeester}}, bereikbaar via [hans.c.m.hendriks@gmail.com](mailto:hans.c.m.hendriks@gmail.com)
+- **Voorzitter:** {{voorzitter}}, bereikbaar via [voorzitter@inijmegen.nl](mailto:voorzitter@inijmegen.nl)
+- **Secretaris:** {{secretaris}}, bereikbaar via [secretaris@inijmegen.nl](mailto:secretaris@inijmegen.nl)
+- **Penningmeester:** {{penningmeester}}, bereikbaar via [penningmeester@inijmegen.nl](mailto:penningmeester@inijmegen.nl)
 
 ### Beloningsbeleid
 
@@ -188,6 +188,6 @@ Naar beste weten voldoet deze website geheel of grotendeels aan WCAG 2.2, niveau
 
 ## Probleem melden
 
-Loopt u toch tegen een probleem aan? Meld dit dan bij de secretaris via [marijke.van.veen@wxs.nl](mailto:marijke.van.veen@wxs.nl). Wij reageren zo snel mogelijk en verhelpen het probleem waar dat kan.
+Loopt u toch tegen een probleem aan? Meld dit dan bij de secretaris via [secretaris@inijmegen.nl](mailto:secretaris@inijmegen.nl). Wij reageren zo snel mogelijk en verhelpen het probleem waar dat kan.
 
 Deze verklaring is opgesteld op 10 september 2026.');
