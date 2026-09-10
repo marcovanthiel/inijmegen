@@ -11,7 +11,7 @@
     "seed:remote": "wrangler d1 execute inijmegen-cms --remote --file=./schema/002_seed.sql"
   },
   "dependencies": {
-    "hono": "^4.12.34",
+    "hono": "^4.13.5",
     "marked": "^18.0.7"
   },
   "devDependencies": {
