@@ -88,8 +88,9 @@ ${body}
       </div>
       <div>
         <h4>Bestuur</h4>
-        <p>${raw(settings.contact_secretaris ?? 'Secretaris<br>Lodewijkstraat 8<br>6585 KM Mook')}</p>
-        <p>${raw(settings.contact_penningmeester ?? 'Penningmeester<br>Herckenrathweg 6<br>6681 DD Bemmel')}</p>
+        <p>${raw(settings.contact_voorzitter ?? 'Voorzitter: René Wilderom<br><a href="mailto:renewilderom@gmail.com">renewilderom@gmail.com</a>')}</p>
+        <p>${raw(settings.contact_secretaris ?? 'Secretaris: Marijke van Veen<br><a href="mailto:marijke.van.veen@wxs.nl">marijke.van.veen@wxs.nl</a>')}</p>
+        <p>${raw(settings.contact_penningmeester ?? 'Penningmeester: Hans Hendriks<br><a href="mailto:hans.c.m.hendriks@gmail.com">hans.c.m.hendriks@gmail.com</a>')}</p>
       </div>
       <div>
         <h4>Gegevens</h4>

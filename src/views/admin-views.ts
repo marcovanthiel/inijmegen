@@ -310,8 +310,9 @@ export function renderSettings(opts: {
     ['voorzitter', 'Voorzitter', 'René Wilderom', 'text'],
     ['penningmeester', 'Penningmeester', 'Hans Hendriks', 'text'],
     ['secretaris', 'Secretaris', 'Marijke van Veen', 'text'],
-    ['contact_secretaris', 'Adres secretaris (HTML toegestaan)', '', 'textarea'],
-    ['contact_penningmeester', 'Adres penningmeester (HTML toegestaan)', '', 'textarea'],
+    ['contact_voorzitter', 'Contact voorzitter (HTML toegestaan)', '', 'textarea'],
+    ['contact_secretaris', 'Contact secretaris (HTML toegestaan)', '', 'textarea'],
+    ['contact_penningmeester', 'Contact penningmeester (HTML toegestaan)', '', 'textarea'],
   ];
   const body = html`<div class="container">
   <h1>Stichtingsgegevens</h1>

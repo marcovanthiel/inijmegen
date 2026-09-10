@@ -12,8 +12,9 @@ INSERT OR REPLACE INTO settings (key, value) VALUES
   ('voorzitter', 'René Wilderom'),
   ('penningmeester', 'Hans Hendriks'),
   ('secretaris', 'Marijke van Veen'),
-  ('contact_secretaris', 'Secretaris<br>Lodewijkstraat 8<br>6585 KM Mook'),
-  ('contact_penningmeester', 'Penningmeester<br>Herckenrathweg 6<br>6681 DD Bemmel');
+  ('contact_voorzitter', 'Voorzitter: René Wilderom<br><a href="mailto:renewilderom@gmail.com">renewilderom@gmail.com</a>'),
+  ('contact_secretaris', 'Secretaris: Marijke van Veen<br><a href="mailto:marijke.van.veen@wxs.nl">marijke.van.veen@wxs.nl</a>'),
+  ('contact_penningmeester', 'Penningmeester: Hans Hendriks<br><a href="mailto:hans.c.m.hendriks@gmail.com">hans.c.m.hendriks@gmail.com</a>');
 
 -- ── Pages ───────────────────────────────────────────────────────────
 
@@ -41,9 +42,15 @@ VALUES
    1,
    '## Doelstelling
 
-De stichting heeft de volgende statutaire doelstelling: haar financiële middelen, zo veel als naar het oordeel van het bestuur mogelijk, te besteden voor doeleinden die een sociaal-charitatief karakter hebben.
+De Stichting Gemeenschapsservice Nijmegen Stad en Land stelt zich ten doel: het verlenen van financiële steun aan personen, organisaties en instellingen die zich met name inzetten voor het leveren van een bijdrage op het gebied van verbetering en ondersteuning van maatschappelijke zorg, armoedebestrijding, kunst en cultuur, sport of onderwijs.
 
-Hoe dan ook dient een zeer overwegend deel van de geldmiddelen van de stichting dienstbaar gemaakt te worden aan de behartiging van doelstellingen die als van algemeen maatschappelijk belang kunnen worden beschouwd. Deze doelstellingen mogen liggen zowel in Nederland als daarbuiten.
+De projecten die wij ondersteunen zijn "dichtbij", in Nijmegen en omgeving. De stichting is een maatschappelijke partner die zinvolle en effectieve ondersteuning biedt.
+
+De projecten die wij de afgelopen jaren hebben gesteund kenmerken zich door concrete, eenmalige acties of evenementen die door maatschappelijke organisaties of een groep enthousiaste vrijwilligers worden georganiseerd. Onze bijdrage maakt het vaak mogelijk om de acties op gang te helpen of soms volledig uit te voeren. In de meeste gevallen is de donatie eenmalig.
+
+Bij aanvragen kijken we vooral naar de concreetheid van de aanvraag: wat is precies het doel en welke doelgroep wil men ondersteunen? Bijvoorbeeld financiële steun om een vakantieweekend voor kinderen uit achterstandswijken mogelijk te maken, of de aanschaf van speciale hulpmiddelen voor sportactiviteiten voor mensen met een geestelijke of lichamelijke beperking.
+
+Iedere aanvraag wordt beoordeeld aan de hand van een aantal voorwaarden. Welke dit zijn kunt u lezen op de pagina [Voorwaarden](/voorwaarden).
 
 ## Gegevens van de stichting
 
@@ -54,9 +61,7 @@ Hoe dan ook dient een zeer overwegend deel van de geldmiddelen van de stichting 
 
 ## Contact
 
-{{contact_secretaris}}
-
-{{contact_penningmeester}}'),
+U vindt de contactgegevens op de pagina [Bestuur](/bestuur).'),
 
   ('/bestuur', 'Bestuur', 2, 1,
    'Bestuur · Gemeenschapsservice Nijmegen Stad en Land',
@@ -68,9 +73,9 @@ Hoe dan ook dient een zeer overwegend deel van de geldmiddelen van de stichting 
    1,
    '## Samenstelling
 
-- **Voorzitter:** {{voorzitter}}
-- **Penningmeester:** {{penningmeester}}
-- **Secretaris:** {{secretaris}}
+- **Voorzitter:** {{voorzitter}}, bereikbaar via [renewilderom@gmail.com](mailto:renewilderom@gmail.com)
+- **Secretaris:** {{secretaris}}, bereikbaar via [marijke.van.veen@wxs.nl](mailto:marijke.van.veen@wxs.nl)
+- **Penningmeester:** {{penningmeester}}, bereikbaar via [hans.c.m.hendriks@gmail.com](mailto:hans.c.m.hendriks@gmail.com)
 
 ### Beloningsbeleid
 
