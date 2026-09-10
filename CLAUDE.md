@@ -177,10 +177,34 @@ geselecteerde tekst + de stijlgids.
 - **Cache purge per pagina** (geen Cache-Tag API, want die vereist
   Enterprise). `cache.delete` per slug is voldoende.
 
+## E-mail: spambescherming + role-aliassen
+
+- **Obfuscatie (live sinds 10-9-2026)**: `src/lib/obfuscate.ts` entity-encodeert
+  álle e-mailadressen (incl. `mailto:`) in de publieke HTML, centraal in
+  `renderLayout`. Browsers decoderen transparant; harvesters die op
+  @-patronen grepen zien niets. Geldt automatisch ook voor adressen die het
+  bestuur later via de admin toevoegt.
+- **Role-aliassen (deels open)**: voorzitter@ / secretaris@ /
+  penningmeester@inijmegen.nl via Cloudflare Email Routing, forwards naar de
+  privé-adressen van René / Marijke / Hans. Volgorde:
+  1. API-token rechten geven (Account: Email Routing Addresses Edit; Zone:
+     Email Routing Rules Edit, DNS Edit, Zone Settings Edit) óf wizard in
+     dashboard → zone inijmegen.nl → E-mail → Email Routing.
+  2. Routing aanzetten (zet MX + SPF; zone had nog géén mailrecords) en de
+     drie regels + bestemmingsadressen aanmaken. Elk bestuurslid krijgt een
+     verificatiemail van Cloudflare en moet die bevestigen.
+  3. Pas daarná `scripts/switch-mail-aliases.sh` draaien: zet settings +
+     paginateksten in live D1 om naar de aliassen (eerder omzetten = bounces).
+  4. Testmail naar de drie aliassen sturen en doorkomst verifiëren.
+- **Let op Resend**: `MAIL_FROM=noreply@inijmegen.nl` maar de zone heeft geen
+  SPF/DKIM voor Resend. Als Email Routing SPF plaatst, Resend-include zo
+  nodig mergen in hetzelfde TXT-record (nooit twee SPF-records).
+
 ## Geplande domeinmigratie (open)
 
 De site gaat verhuizen naar **goededoelennijmegenstadenland.nl** zodra
-Marco de domeinregistratie rond heeft. Stappenplan bij dat moment:
+Marco de domeinregistratie rond heeft (whois 10-9-2026: nog vrij).
+Stappenplan bij dat moment:
 
 1. Zone toevoegen in Cloudflare (account 04865…) en nameservers zetten.
 2. Custom domain aan de Worker koppelen via het **dashboard** (niet via
@@ -188,9 +212,17 @@ Marco de domeinregistratie rond heeft. Stappenplan bij dat moment:
 3. `SITE_HOST` in `wrangler.toml [vars]` aanpassen (sitemap/canonical).
 4. 301-redirect van inijmegen.nl naar het nieuwe domein in `public.ts`.
 5. `MAIL_FROM`/Resend beoordelen: blijft inijmegen.nl of mee verhuizen.
+6. Email Routing óók op de nieuwe zone (zelfde drie aliassen), daarna
+   `DOMAIN=goededoelennijmegenstadenland.nl bash scripts/switch-mail-aliases.sh`
+   en de fallbacks in `src/views/layout.ts` + seed mee omzetten.
 
 ## Changelog
 
+- **2026-09-10** (5): Spambescherming e-mail: entity-encoding van alle
+  adressen in publieke HTML (`src/lib/obfuscate.ts`), role-aliassen in
+  fallbacks + seed, `scripts/switch-mail-aliases.sh` voor de live-D1-flip.
+  Open: Email Routing aanzetten (token-rechten of dashboard) en daarna de
+  flip draaien — zie sectie "E-mail".
 - **2026-09-10** (4): Toegankelijkheidsverklaring toegevoegd op
   `/toegankelijkheid` (D1-pagina, in_nav 0, ook in seed) + footerlink in
   kolom Documenten; streven WCAG 2.2 AA, melden via de secretaris.
