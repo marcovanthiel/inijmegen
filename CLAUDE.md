@@ -177,8 +177,25 @@ geselecteerde tekst + de stijlgids.
 - **Cache purge per pagina** (geen Cache-Tag API, want die vereist
   Enterprise). `cache.delete` per slug is voldoende.
 
+## Geplande domeinmigratie (open)
+
+De site gaat verhuizen naar **goededoelennijmegenstadenland.nl** zodra
+Marco de domeinregistratie rond heeft. Stappenplan bij dat moment:
+
+1. Zone toevoegen in Cloudflare (account 04865…) en nameservers zetten.
+2. Custom domain aan de Worker koppelen via het **dashboard** (niet via
+   wrangler.toml — zie valkuil error 1042 in skill cloudflare-webdev).
+3. `SITE_HOST` in `wrangler.toml [vars]` aanpassen (sitemap/canonical).
+4. 301-redirect van inijmegen.nl naar het nieuwe domein in `public.ts`.
+5. `MAIL_FROM`/Resend beoordelen: blijft inijmegen.nl of mee verhuizen.
+
 ## Changelog
 
+- **2026-09-10** (3): Naamswijziging: de site heet **Goede Doelen
+  Nijmegen Stad en Land**, met de stichtingsnaam als subtitel in header,
+  footer en admin. SITE_NAME-var en paginatitels (D1 + seed) mee. Mobiel
+  logoblok compacter. Toekomstig domein: goededoelennijmegenstadenland.nl
+  (zie "Geplande domeinmigratie").
 - **2026-09-10** (2): Onderhoudsronde: hono 4.13.7, marked 18.0.12,
   wrangler 4.130, typescript 7.0.2, setup-node v7 (SHA-gepind);
   dependabot-PR's #4/#6/#13/#14 als één commit verwerkt en gesloten.
