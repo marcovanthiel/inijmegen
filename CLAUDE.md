@@ -65,7 +65,7 @@ Vereiste GH secrets:
 Vereiste Worker-secrets (via `wrangler secret put <NAME>`):
 - `SESSION_SECRET` — 32+ random bytes hex, voor cookie HMAC
 - `ANTHROPIC_API_KEY` — voor AI-hulp in admin
-- `RESEND_API_KEY` — voor wachtwoord-reset + uitnodigings-mail
+- (mail loopt via de Cloudflare Email Sending-binding `EMAIL`, geen key nodig)
 
 Vars in `wrangler.toml` `[vars]`: `SITE_NAME`, `SITE_HOST`, `MAIL_FROM`.
 
@@ -94,7 +94,7 @@ node-snippet).
 3. `wrangler r2 bucket create inijmegen-pdc`
 4. `wrangler secret put SESSION_SECRET` (random 32-byte hex)
 5. `wrangler secret put ANTHROPIC_API_KEY`
-6. `wrangler secret put RESEND_API_KEY`
+6. `wrangler email sending enable goededoelennijmegenstadenland.nl` (Email Sending onboarden; zet DNS)
 7. `npm run db:apply:remote && npm run seed:remote`
 8. `bash scripts/seed-pdc.sh remote` (oude PDC-PDFs → R2 + D1)
 9. `git push` of `npm run deploy`
@@ -123,7 +123,7 @@ node-snippet).
 │   │   ├── markdown.ts    # marked + sanitize + interpolate
 │   │   ├── html.ts        # html`` tagged template (auto-escape)
 │   │   ├── cache.ts       # purgePaths via Workers Cache API
-│   │   └── mail.ts        # Resend voor reset/uitnodigingen
+│   │   └── mail.ts        # Cloudflare Email Sending (EMAIL-binding) voor reset/uitnodigingen
 │   ├── routes/
 │   │   ├── public.ts      # publieke site + PDC-streaming + sitemap
 │   │   ├── auth.ts        # login, logout, forgot, reset
@@ -196,9 +196,14 @@ geselecteerde tekst + de stijlgids.
   3. Pas daarná `scripts/switch-mail-aliases.sh` draaien: zet settings +
      paginateksten in live D1 om naar de aliassen (eerder omzetten = bounces).
   4. Testmail naar de drie aliassen sturen en doorkomst verifiëren.
-- **Let op Resend**: `MAIL_FROM=noreply@inijmegen.nl` maar de zone heeft geen
-  SPF/DKIM voor Resend. Als Email Routing SPF plaatst, Resend-include zo
-  nodig mergen in hetzelfde TXT-record (nooit twee SPF-records).
+- **Uitgaande mail via Cloudflare Email Sending** (sinds 11-9-2026, vervangt
+  Resend): de Worker verstuurt via de `send_email`-binding `EMAIL`
+  (`src/lib/mail.ts`, `env.EMAIL.send({...})`). Geen API-key. Afzender
+  `MAIL_FROM=noreply@goededoelennijmegenstadenland.nl`; dat domein moet
+  onboarded zijn (`wrangler email sending enable ...`, zet zelf DKIM/SPF-DNS).
+  De binding is "unrestricted", dus mag naar willekeurige ontvangers (wachtwoord-
+  reset naar bestuursleden). Inkomende role-aliassen zijn een aparte kwestie
+  (Email Routing, zie hieronder).
 
 ## Domeinmigratie (afgerond 11-9-2026)
 
@@ -210,26 +215,37 @@ beide hostnames als custom domain aan de Worker `inijmegen` gekoppeld,
 URL's serveren de site niet meer. De Worker-service houdt de naam `inijmegen`
 (hernoemen is onnodig en disruptief).
 
-**E-mail meeverhuizen naar goededoelennijmegenstadenland.nl — Marco koos 11-9-2026
-optie 1, uitvoering GEBLOKKEERD op toegang:**
-- Nodig vóór uitvoering: (a) **Resend**-domein goededoelennijmegenstadenland.nl
-  toevoegen + verifiëren (dashboard of API-key met domains-scope; lokaal is géén
-  Resend-key aanwezig, en in prod is als Worker-secret alléén `SESSION_SECRET`
-  gezet — `RESEND_API_KEY`/`ANTHROPIC_API_KEY` lijken niet gezet, dus verzendende
-  mail werkte vermoedelijk sowieso nog niet). (b) **Cloudflare Email Routing** op
-  de nieuwe zone — het huidige `~/.cf-token` heeft dáár GEEN rechten voor
-  (Email Routing Rules/Addresses Edit ontbreekt; DNS Edit heeft het wél). (c) de
-  drie bestuursleden moeten elk een Cloudflare-verificatiemail bevestigen.
-- Uitvoering zodra (a)+(b) geregeld: Resend-DNS + Email-Routing-MX/SPF op de
-  nieuwe zone zetten, `MAIL_FROM` → `noreply@goededoelennijmegenstadenland.nl`
-  in `wrangler.toml`, de fallbacks in `src/views/layout.ts` + seed omzetten, en
-  `DOMAIN=goededoelennijmegenstadenland.nl bash scripts/switch-mail-aliases.sh`
-  draaien. Bestemmingen bestuur staan in dat script (Gmail/wxs-adressen).
+**Uitgaande mail: omgezet naar Cloudflare Email Sending (11-9-2026).** Code +
+config staan live (binding `EMAIL`, `MAIL_FROM` op het nieuwe domein, Resend
+verwijderd). **Eén stap resteert (tokenrecht):** het afzenddomein onboarden met
+`wrangler email sending enable goededoelennijmegenstadenland.nl` — dat faalt met
+het huidige `~/.cf-token` (Email Sending **edit** ontbreekt; `list`/lezen mag
+wél, DNS Edit ook). Oplossing: token uitbreiden met de Email Sending-permissie
+(dan draai ik het commando; het zet zelf de DKIM/SPF-records) óf onboarden via
+dashboard → zone → E-mail → Email Sending. Tot dat moment gooit een verzendpoging
+een fout (net als voorheen; mail werkte al niet — er was nooit een RESEND-key
+gezet). NB in prod is als Worker-secret alléén `SESSION_SECRET` gezet;
+`ANTHROPIC_API_KEY` ontbreekt ook, dus AI-hulp werkt nog niet.
+
+**Inkomende role-aliassen (apart, nog open).** voorzitter@/secretaris@/
+penningmeester@goededoelennijmegenstadenland.nl via **Email Routing**: token mist
+die rechten (Email Routing Rules/Addresses Edit) én de drie bestuursleden moeten
+elk een Cloudflare-verificatiemail bevestigen. Daarna de displayed adressen
+omzetten met `DOMAIN=goededoelennijmegenstadenland.nl bash
+scripts/switch-mail-aliases.sh` (+ fallbacks in `src/views/layout.ts` + seed).
+Bestemmingen bestuur staan in dat script (Gmail/wxs-adressen). Zolang dit niet
+staat, tonen footer/bestuurspagina nog @inijmegen.nl-adressen die niet ontvangen.
+
 - Cosmetische inijmegen.nl-vermeldingen in codecommentaar (`src/index.ts`,
   `src/lib/cache.ts`) zijn gelaten; puur toelichting, geen functie.
 
 ## Changelog
 
+- **2026-09-11** (2): Uitgaande mail van **Resend → Cloudflare Email Sending**
+  (`send_email`-binding `EMAIL`, `src/lib/mail.ts` herschreven, RESEND uit env +
+  wrangler + docs, `MAIL_FROM`=noreply@goededoelennijmegenstadenland.nl).
+  Typecheck + dry-run groen (binding "unrestricted"). Resteert: domein onboarden
+  (`wrangler email sending enable`) — tokenrecht Email Sending edit nodig.
 - **2026-09-11**: Domeinmigratie naar **goededoelennijmegenstadenland.nl**
   (+ www) afgerond: custom domains aan de Worker, `SITE_HOST` + sitemap
   omgezet, **inijmegen.nl losgekoppeld zonder redirect** (op verzoek).

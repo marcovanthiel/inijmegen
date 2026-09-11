@@ -26,11 +26,18 @@ database_id = "4cb8d7ac-2f7b-4469-a41b-1172c102d0b0"
 binding = "PDC"
 bucket_name = "inijmegen-pdc"
 
+# Cloudflare Email Sending: uitgaande mail (wachtwoord-reset, uitnodigingen)
+# zonder externe dienst. Het afzenddomein van MAIL_FROM moet onboarded zijn:
+# `wrangler email sending enable goededoelennijmegenstadenland.nl`.
+[[send_email]]
+name = "EMAIL"
+
 # Env vars (geen secrets). Secrets gaan via `wrangler secret put`:
 #   - SESSION_SECRET   (32+ random bytes, hex)
-#   - ANTHROPIC_API_KEY
-#   - RESEND_API_KEY   (voor wachtwoord-reset mail)
+#   - ANTHROPIC_API_KEY   (voor AI-hulp in admin)
+# Uitgaande mail loopt via de Cloudflare Email Sending-binding (send_email),
+# dus er is GÉÉN mail-API-key meer nodig.
 [vars]
 SITE_NAME = "Goede Doelen Nijmegen Stad en Land"
 SITE_HOST = "goededoelennijmegenstadenland.nl"
-MAIL_FROM = "noreply@inijmegen.nl"
+MAIL_FROM = "noreply@goededoelennijmegenstadenland.nl"
