@@ -200,24 +200,35 @@ geselecteerde tekst + de stijlgids.
   SPF/DKIM voor Resend. Als Email Routing SPF plaatst, Resend-include zo
   nodig mergen in hetzelfde TXT-record (nooit twee SPF-records).
 
-## Geplande domeinmigratie (open)
+## Domeinmigratie (afgerond 11-9-2026)
 
-De site gaat verhuizen naar **goededoelennijmegenstadenland.nl** zodra
-Marco de domeinregistratie rond heeft (whois 10-9-2026: nog vrij).
-Stappenplan bij dat moment:
+De site draait sinds 11-9-2026 op **goededoelennijmegenstadenland.nl**
+(+ www). Uitgevoerd: zone actief in Cloudflare (`efe5defd90533813df87af1878200e32`),
+beide hostnames als custom domain aan de Worker `inijmegen` gekoppeld,
+`SITE_HOST` en de sitemap-URL in `public/robots.txt` omgezet. **inijmegen.nl
+(+ www) is losgekoppeld van de Worker; er is op verzoek GEEN redirect** — die
+URL's serveren de site niet meer. De Worker-service houdt de naam `inijmegen`
+(hernoemen is onnodig en disruptief).
 
-1. Zone toevoegen in Cloudflare (account 04865…) en nameservers zetten.
-2. Custom domain aan de Worker koppelen via het **dashboard** (niet via
-   wrangler.toml — zie valkuil error 1042 in skill cloudflare-webdev).
-3. `SITE_HOST` in `wrangler.toml [vars]` aanpassen (sitemap/canonical).
-4. 301-redirect van inijmegen.nl naar het nieuwe domein in `public.ts`.
-5. `MAIL_FROM`/Resend beoordelen: blijft inijmegen.nl of mee verhuizen.
-6. Email Routing óók op de nieuwe zone (zelfde drie aliassen), daarna
-   `DOMAIN=goededoelennijmegenstadenland.nl bash scripts/switch-mail-aliases.sh`
-   en de fallbacks in `src/views/layout.ts` + seed mee omzetten.
+**Nog te beslissen door Marco (bewust niet meegewijzigd):**
+- **E-mail blijft op inijmegen.nl.** `MAIL_FROM=noreply@inijmegen.nl` (Resend)
+  en de role-aliassen voorzitter@/secretaris@/penningmeester@inijmegen.nl in de
+  footer/fallbacks/seed staan nog op het oude domein. Wil je e-mail meeverhuizen
+  naar goededoelennijmegenstadenland.nl, dan: Resend-domeinverificatie +
+  Email Routing op de nieuwe zone opzetten, `MAIL_FROM` omzetten, en
+  `DOMAIN=goededoelennijmegenstadenland.nl bash scripts/switch-mail-aliases.sh`
+  draaien (plus de fallbacks in `src/views/layout.ts` + seed). Zolang inijmegen.nl
+  geregistreerd blijft en in Resend geverifieerd is, blijft de huidige mail werken.
+- Cosmetische inijmegen.nl-vermeldingen in codecommentaar (`src/index.ts`,
+  `src/lib/cache.ts`) zijn gelaten; puur toelichting, geen functie.
 
 ## Changelog
 
+- **2026-09-11**: Domeinmigratie naar **goededoelennijmegenstadenland.nl**
+  (+ www) afgerond: custom domains aan de Worker, `SITE_HOST` + sitemap
+  omgezet, **inijmegen.nl losgekoppeld zonder redirect** (op verzoek).
+  E-mail (MAIL_FROM + role-aliassen) bewust nog op inijmegen.nl — zie
+  "Domeinmigratie".
 - **2026-09-10** (5): Spambescherming e-mail: entity-encoding van alle
   adressen in publieke HTML (`src/lib/obfuscate.ts`), role-aliassen in
   fallbacks + seed, `scripts/switch-mail-aliases.sh` voor de live-D1-flip.

@@ -32,5 +32,5 @@ bucket_name = "inijmegen-pdc"
 #   - RESEND_API_KEY   (voor wachtwoord-reset mail)
 [vars]
 SITE_NAME = "Goede Doelen Nijmegen Stad en Land"
-SITE_HOST = "inijmegen.nl"
+SITE_HOST = "goededoelennijmegenstadenland.nl"
 MAIL_FROM = "noreply@inijmegen.nl"
