@@ -210,15 +210,21 @@ beide hostnames als custom domain aan de Worker `inijmegen` gekoppeld,
 URL's serveren de site niet meer. De Worker-service houdt de naam `inijmegen`
 (hernoemen is onnodig en disruptief).
 
-**Nog te beslissen door Marco (bewust niet meegewijzigd):**
-- **E-mail blijft op inijmegen.nl.** `MAIL_FROM=noreply@inijmegen.nl` (Resend)
-  en de role-aliassen voorzitter@/secretaris@/penningmeester@inijmegen.nl in de
-  footer/fallbacks/seed staan nog op het oude domein. Wil je e-mail meeverhuizen
-  naar goededoelennijmegenstadenland.nl, dan: Resend-domeinverificatie +
-  Email Routing op de nieuwe zone opzetten, `MAIL_FROM` omzetten, en
+**E-mail meeverhuizen naar goededoelennijmegenstadenland.nl — Marco koos 11-9-2026
+optie 1, uitvoering GEBLOKKEERD op toegang:**
+- Nodig vóór uitvoering: (a) **Resend**-domein goededoelennijmegenstadenland.nl
+  toevoegen + verifiëren (dashboard of API-key met domains-scope; lokaal is géén
+  Resend-key aanwezig, en in prod is als Worker-secret alléén `SESSION_SECRET`
+  gezet — `RESEND_API_KEY`/`ANTHROPIC_API_KEY` lijken niet gezet, dus verzendende
+  mail werkte vermoedelijk sowieso nog niet). (b) **Cloudflare Email Routing** op
+  de nieuwe zone — het huidige `~/.cf-token` heeft dáár GEEN rechten voor
+  (Email Routing Rules/Addresses Edit ontbreekt; DNS Edit heeft het wél). (c) de
+  drie bestuursleden moeten elk een Cloudflare-verificatiemail bevestigen.
+- Uitvoering zodra (a)+(b) geregeld: Resend-DNS + Email-Routing-MX/SPF op de
+  nieuwe zone zetten, `MAIL_FROM` → `noreply@goededoelennijmegenstadenland.nl`
+  in `wrangler.toml`, de fallbacks in `src/views/layout.ts` + seed omzetten, en
   `DOMAIN=goededoelennijmegenstadenland.nl bash scripts/switch-mail-aliases.sh`
-  draaien (plus de fallbacks in `src/views/layout.ts` + seed). Zolang inijmegen.nl
-  geregistreerd blijft en in Resend geverifieerd is, blijft de huidige mail werken.
+  draaien. Bestemmingen bestuur staan in dat script (Gmail/wxs-adressen).
 - Cosmetische inijmegen.nl-vermeldingen in codecommentaar (`src/index.ts`,
   `src/lib/cache.ts`) zijn gelaten; puur toelichting, geen functie.
 
