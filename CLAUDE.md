@@ -215,17 +215,17 @@ beide hostnames als custom domain aan de Worker `inijmegen` gekoppeld,
 URL's serveren de site niet meer. De Worker-service houdt de naam `inijmegen`
 (hernoemen is onnodig en disruptief).
 
-**Uitgaande mail: omgezet naar Cloudflare Email Sending (11-9-2026).** Code +
-config staan live (binding `EMAIL`, `MAIL_FROM` op het nieuwe domein, Resend
-verwijderd). **Eén stap resteert (tokenrecht):** het afzenddomein onboarden met
-`wrangler email sending enable goededoelennijmegenstadenland.nl` — dat faalt met
-het huidige `~/.cf-token` (Email Sending **edit** ontbreekt; `list`/lezen mag
-wél, DNS Edit ook). Oplossing: token uitbreiden met de Email Sending-permissie
-(dan draai ik het commando; het zet zelf de DKIM/SPF-records) óf onboarden via
-dashboard → zone → E-mail → Email Sending. Tot dat moment gooit een verzendpoging
-een fout (net als voorheen; mail werkte al niet — er was nooit een RESEND-key
-gezet). NB in prod is als Worker-secret alléén `SESSION_SECRET` gezet;
-`ANTHROPIC_API_KEY` ontbreekt ook, dus AI-hulp werkt nog niet.
+**Uitgaande mail: omgezet naar Cloudflare Email Sending (11/12-9-2026) — WERKT.**
+Code + config live (binding `EMAIL`, `MAIL_FROM=noreply@goededoelennijmegenstadenland.nl`,
+Resend verwijderd). Domein **onboarded 12-9-2026** met
+`wrangler email sending enable goededoelennijmegenstadenland.nl` (token kreeg
+Email Sending: Edit). Cloudflare zette zelf de mailrecords: MX + DKIM + SPF op
+`cf-bounce.goededoelennijmegenstadenland.nl` (return-path/selector = `cf-bounce`)
+en `_dmarc` op `p=reject`. Subdomein enabled (tag 50f3029e…). Testmail vanaf
+noreply@ bevestigd werkend (kort na onboarden gaf de send even
+`sender_not_configured` = verificatie-propagatie; loste vanzelf op). NB in prod is
+als Worker-secret alléén `SESSION_SECRET` gezet; `ANTHROPIC_API_KEY` ontbreekt,
+dus AI-hulp werkt nog niet (aparte Anthropic-key nodig).
 
 **Inkomende role-aliassen (apart, nog open).** voorzitter@/secretaris@/
 penningmeester@goededoelennijmegenstadenland.nl via **Email Routing**: token mist
