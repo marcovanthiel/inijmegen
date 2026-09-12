@@ -32,11 +32,10 @@ bucket_name = "inijmegen-pdc"
 [[send_email]]
 name = "EMAIL"
 
-# Env vars (geen secrets). Secrets gaan via `wrangler secret put`:
+# Env vars (geen secrets). Secret gaat via `wrangler secret put`:
 #   - SESSION_SECRET   (32+ random bytes, hex)
-#   - ANTHROPIC_API_KEY   (voor AI-hulp in admin)
 # Uitgaande mail loopt via de Cloudflare Email Sending-binding (send_email),
-# dus er is GÉÉN mail-API-key meer nodig.
+# dus er is GÉÉN mail-API-key nodig; de admin heeft geen AI-hulp meer.
 [vars]
 SITE_NAME = "Goede Doelen Nijmegen Stad en Land"
 SITE_HOST = "goededoelennijmegenstadenland.nl"

@@ -37,8 +37,6 @@ zelf via een admin-UI teksten en jaarstukken kan beheren.
   een save.
 - **Admin** onder `/admin/*` met email + wachtwoord (PBKDF2, sessie-cookie
   HMAC-getekend, sessions in D1 voor revocation).
-- **AI-hulp**: Claude Haiku 4.5 via `/admin/api/ai/transform`. Stijlgids in
-  `src/routes/ai.ts` (formele toon, u-vorm, ANBI-context).
 
 ## Hosting & deploy
 
@@ -64,8 +62,8 @@ Vereiste GH secrets:
 
 Vereiste Worker-secrets (via `wrangler secret put <NAME>`):
 - `SESSION_SECRET` — 32+ random bytes hex, voor cookie HMAC
-- `ANTHROPIC_API_KEY` — voor AI-hulp in admin
-- (mail loopt via de Cloudflare Email Sending-binding `EMAIL`, geen key nodig)
+- (mail loopt via de Cloudflare Email Sending-binding `EMAIL`, geen key nodig;
+  de admin heeft geen AI-hulp meer, dus géén ANTHROPIC_API_KEY nodig)
 
 Vars in `wrangler.toml` `[vars]`: `SITE_NAME`, `SITE_HOST`, `MAIL_FROM`.
 
@@ -76,9 +74,8 @@ npm install
 npm run db:apply:local    # 001_init.sql in lokale D1
 npm run seed:local        # 002_seed.sql (pages + settings)
 
-# .dev.vars aanmaken met SESSION_SECRET en ANTHROPIC_API_KEY
+# .dev.vars aanmaken met SESSION_SECRET
 echo "SESSION_SECRET=$(node -e 'process.stdout.write(require(\"crypto\").randomBytes(32).toString(\"hex\"))')" > .dev.vars
-echo "ANTHROPIC_API_KEY=sk-ant-..." >> .dev.vars
 
 npm run dev               # wrangler dev op http://127.0.0.1:8787
 ```
@@ -93,12 +90,11 @@ node-snippet).
 2. `wrangler d1 create inijmegen-cms` → `database_id` in `wrangler.toml` zetten
 3. `wrangler r2 bucket create inijmegen-pdc`
 4. `wrangler secret put SESSION_SECRET` (random 32-byte hex)
-5. `wrangler secret put ANTHROPIC_API_KEY`
-6. `wrangler email sending enable goededoelennijmegenstadenland.nl` (Email Sending onboarden; zet DNS)
-7. `npm run db:apply:remote && npm run seed:remote`
-8. `bash scripts/seed-pdc.sh remote` (oude PDC-PDFs → R2 + D1)
-9. `git push` of `npm run deploy`
-10. `bash scripts/create-first-user.sh "<naam>" <email> admin` → reset-link openen
+5. `wrangler email sending enable goededoelennijmegenstadenland.nl` (Email Sending onboarden; zet DNS)
+6. `npm run db:apply:remote && npm run seed:remote`
+7. `bash scripts/seed-pdc.sh remote` (oude PDC-PDFs → R2 + D1)
+8. `git push` of `npm run deploy`
+9. `bash scripts/create-first-user.sh "<naam>" <email> admin` → reset-link openen
 
 ## Repo-structuur
 
@@ -127,8 +123,7 @@ node-snippet).
 │   ├── routes/
 │   │   ├── public.ts      # publieke site + PDC-streaming + sitemap
 │   │   ├── auth.ts        # login, logout, forgot, reset
-│   │   ├── admin.ts       # dashboard, pages, jaarstukken, settings, users
-│   │   └── ai.ts          # Claude Haiku transform endpoint
+│   │   └── admin.ts       # dashboard, pages, jaarstukken, settings, users
 │   └── views/
 │       ├── layout.ts      # publieke site layout
 │       ├── public.ts      # render publieke pagina + 404
@@ -158,13 +153,6 @@ node-snippet).
   adressen op de site, alleen e-mailadressen.
 - **`jaarstukken`**: één rij per jaar, met R2-key naar de PDF. Upload via
   admin → R2 `put` + D1 upsert + cache purge van `/jaarstukken`.
-
-## AI-stijlgids
-
-Staat in `src/routes/ai.ts` als `STYLE_GUIDE`. Vier vaste acties
-(improve/shorten/formal/check) + vrij instructie-veld. Model:
-`claude-haiku-4-5-20251001`. AI krijgt nooit secrets — alleen de
-geselecteerde tekst + de stijlgids.
 
 ## Bekende keuzes
 
@@ -224,8 +212,8 @@ Email Sending: Edit). Cloudflare zette zelf de mailrecords: MX + DKIM + SPF op
 en `_dmarc` op `p=reject`. Subdomein enabled (tag 50f3029e…). Testmail vanaf
 noreply@ bevestigd werkend (kort na onboarden gaf de send even
 `sender_not_configured` = verificatie-propagatie; loste vanzelf op). NB in prod is
-als Worker-secret alléén `SESSION_SECRET` gezet; `ANTHROPIC_API_KEY` ontbreekt,
-dus AI-hulp werkt nog niet (aparte Anthropic-key nodig).
+als Worker-secret alléén `SESSION_SECRET` gezet (de AI-hulp is verwijderd, dus
+`ANTHROPIC_API_KEY` is niet meer nodig).
 
 **Inkomende role-aliassen (apart, nog open).** voorzitter@/secretaris@/
 penningmeester@goededoelennijmegenstadenland.nl via **Email Routing**: token mist
@@ -241,6 +229,13 @@ staat, tonen footer/bestuurspagina nog @inijmegen.nl-adressen die niet ontvangen
 
 ## Changelog
 
+- **2026-09-12** (2): **AI-hulp definitief uit de website.** De AI-assistent was
+  al uit de code verwijderd (commit `AI-assistent verwijderen`, geen `ai.ts`,
+  geen `/admin/api/ai/*`, geen AI-paneel in de admin); nu ook alle resten in docs
+  + `wrangler.toml`-commentaar opgeruimd en `ANTHROPIC_API_KEY` als vereiste
+  geschrapt. Live geverifieerd dat er geen AI-route/-UI meer is.
+- **2026-09-12**: Uitgaande mail via Cloudflare Email Sending afgerond (domein
+  onboarded, testmail afgeleverd). Zie sectie "E-mail".
 - **2026-09-11** (2): Uitgaande mail van **Resend → Cloudflare Email Sending**
   (`send_email`-binding `EMAIL`, `src/lib/mail.ts` herschreven, RESEND uit env +
   wrangler + docs, `MAIL_FROM`=noreply@goededoelennijmegenstadenland.nl).
